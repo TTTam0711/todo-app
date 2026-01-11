@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Services\" />
+    <Folder Include="Interfaces\Repositories\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Validators\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TodoApp.Domain\TodoApp.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
