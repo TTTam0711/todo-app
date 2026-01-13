@@ -14,8 +14,5 @@ namespace TodoApp.Application.Interfaces.Repositories
 
         Task AddAsync(TodoListEntity entity, CancellationToken ct = default);
         Task UpdateAsync(TodoListEntity entity, CancellationToken ct = default);
-
-        Task SoftDeleteAsync(Guid listId, DateTime deletedAt, CancellationToken ct = default);
-        Task SetArchivedAsync(Guid listId, bool isArchived, CancellationToken ct = default);
     }
 }

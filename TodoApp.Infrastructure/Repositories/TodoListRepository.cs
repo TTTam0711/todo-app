@@ -59,28 +59,6 @@ namespace TodoApp.Infrastructure.Repositories
             await _db.SaveChangesAsync(ct);
         }
 
-        public async Task SoftDeleteAsync(Guid listId, DateTime deletedAt, CancellationToken ct = default)
-        {
-            var model = await _db.TodoLists
-                .FirstOrDefaultAsync(x => x.ListId == listId, ct)
-                ?? throw new KeyNotFoundException("TodoList not found");
 
-            model.IsDeleted = true;
-            model.DeletedAt = deletedAt;
-
-            await _db.SaveChangesAsync(ct);
-        }
-
-        public async Task SetArchivedAsync(Guid listId, bool isArchived, CancellationToken ct = default)
-        {
-            var model = await _db.TodoLists
-                .FirstOrDefaultAsync(x => x.ListId == listId && !x.IsDeleted, ct)
-                ?? throw new KeyNotFoundException("TodoList not found");
-
-            model.IsArchived = isArchived;
-            model.UpdatedAt = DateTime.UtcNow; // optional
-
-            await _db.SaveChangesAsync(ct);
-        }
     }
 }

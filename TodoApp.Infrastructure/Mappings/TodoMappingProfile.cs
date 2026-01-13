@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Domain.Entities;
+using TodoApp.Domain.Factories;
 using TodoApp.Infrastructure.Persistence.Models;
 
 namespace TodoApp.Infrastructure.Mappings
@@ -15,8 +16,20 @@ namespace TodoApp.Infrastructure.Mappings
         {
             // TodoList
             CreateMap<TodoList, TodoListEntity>()
-                .ForSourceMember(s => s.OwnerUser, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.TodoTasks, opt => opt.DoNotValidate());
+                .ConstructUsing(src =>
+                    TodoListFactory.RestoreFromDb(
+                        src.ListId,
+                        src.OwnerUserId,
+                        src.Name,
+                        src.Color,
+                        src.IsArchived,
+                        src.IsDeleted,
+                        src.DeletedAt,
+                        src.CreatedAt,
+                        src.UpdatedAt,
+                        src.RowVersion
+                    ))
+                .ForAllMembers(opt => opt.Ignore());
 
             CreateMap<TodoListEntity, TodoList>()
                 .ForMember(d => d.OwnerUser, opt => opt.Ignore())

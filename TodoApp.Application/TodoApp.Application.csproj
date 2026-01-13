@@ -7,10 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\SubTasks\" />
+    <Folder Include="DTOs\Tags\" />
     <Folder Include="Interfaces\Services\" />
-    <Folder Include="DTOs\" />
+    <Folder Include="UseCases\SubTasks\" />
+    <Folder Include="UseCases\Tags\" />
+    <Folder Include="UseCases\Tasks\" />
     <Folder Include="Validators\" />
-    <Folder Include="UseCases\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
