@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Infrastructure.Persistence.Models;
 
-namespace TodoApp.Infrastructure.Persistence.DbContext;
+namespace TodoApp.Infrastructure.Persistence.Context;
 
 public partial class TodoAppDbContext : DbContext
 {
