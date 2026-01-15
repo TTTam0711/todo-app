@@ -37,15 +37,24 @@ namespace TodoApp.Infrastructure.Mappings
 
             // TodoTask (Status string <-> enum)
             CreateMap<TodoTask, TodoTaskEntity>()
-                .ForMember(d => d.Status, opt => opt.MapFrom(s => MapStatusToEnum(s.Status)))
-                .ForSourceMember(s => s.Attachments, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.Comments, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.Reminders, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.Subtasks, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.Tags, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.List, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.CreatedByUser, opt => opt.DoNotValidate())
-                .ForSourceMember(s => s.UpdatedByUser, opt => opt.DoNotValidate());
+                .ConstructUsing(src =>
+                    TodoTaskFactory.RestoreFromDb(
+                        src.TaskId,
+                        src.ListId,
+                        src.Title,
+                        MapStatusToEnum(src.Status),
+                        src.IsDeleted,
+                        src.DeletedAt,
+                        src.OrderIndex,
+                        src.Priority,
+                        src.CreatedByUserId,
+                        src.UpdatedByUserId,
+                        src.CreatedAt,
+                        src.UpdatedAt,
+                        src.RowVersion
+                    ))
+                .ForAllMembers(opt => opt.Ignore());
+
 
             CreateMap<TodoTaskEntity, TodoTask>()
                 .ForMember(d => d.Status, opt => opt.MapFrom(s => MapEnumToStatus(s.Status)))
@@ -57,6 +66,7 @@ namespace TodoApp.Infrastructure.Mappings
                 .ForMember(d => d.List, opt => opt.Ignore())
                 .ForMember(d => d.CreatedByUser, opt => opt.Ignore())
                 .ForMember(d => d.UpdatedByUser, opt => opt.Ignore());
+
 
             // ✅ Subtask (ignore navigation Task)
             CreateMap<Subtask, SubtaskEntity>()

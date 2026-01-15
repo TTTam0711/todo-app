@@ -1,0 +1,207 @@
+﻿@page "/"
+@page "/todolists"
+
+@using Microsoft.AspNetCore.Components.Forms
+@using TodoApp.Contracts.TodoLists
+@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Blazor.Forms
+
+@inject TodoApp.Blazor.Services.TodoListApiClient ListApi
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<h2>Todo Lists</h2>
+
+<div class="todo-page">
+
+    <!-- ================= LEFT PANEL ================= -->
+    <div class="todo-lists-panel">
+
+        <!-- New List button -->
+        <button class="btn btn-primary mb-2" @onclick="ShowCreateForm">
+            + New List
+        </button>
+
+        <!-- Create TodoList form -->
+        @if (_showCreateForm)
+        {
+            <EditForm Model="_createListForm"
+                      OnValidSubmit="CreateListAsync">
+                <DataAnnotationsValidator />
+
+                <div class="mb-2">
+                    <label>Name</label><br />
+                    <InputText @bind-Value="_createListForm.Name" />
+                </div>
+
+                <div class="mb-2">
+                    <label>Color</label><br />
+                    <InputText @bind-Value="_createListForm.Color" />
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success"
+                        disabled="@string.IsNullOrWhiteSpace(_createListForm.Name)">
+                    Create
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary ms-2"
+                        @onclick="HideCreateForm">
+                    Cancel
+                </button>
+            </EditForm>
+
+            <hr />
+        }
+
+        <!-- TodoLists -->
+        @if (_isLoadingLists)
+        {
+            <p>Loading lists...</p>
+        }
+        else if (_lists.Count == 0)
+        {
+            <p>No lists</p>
+        }
+        else
+        {
+            <div class="todo-list-cards">
+                @foreach (var list in _lists)
+                {
+                    <div class="todo-list-card"
+                         @onclick="() => SelectListAsync(list)">
+                        <span class="color-dot"
+                              style="background:@(list.Color ?? "#999")"></span>
+                        <span class="todo-list-name">@list.Name</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- ================= RIGHT PANEL ================= -->
+    <div class="todo-detail-panel">
+        @if (_selectedList == null)
+        {
+            <p>Select a list</p>
+        }
+        else
+        {
+            <h4>@_selectedList.Name</h4>
+
+            @if (_isLoadingTasks)
+            {
+                <p>Loading tasks...</p>
+            }
+            else if (_tasks.Count == 0)
+            {
+                <p>No tasks in this list</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var task in _tasks)
+                    {
+                        <li>
+                            <strong>@task.Title</strong>
+                            <small class="text-muted">
+                                (@task.Status)
+                            </small>
+                        </li>
+                    }
+                </ul>
+            }
+        }
+    </div>
+
+</div>
+
+@code {
+
+    // ================= LIST STATE =================
+
+    private IReadOnlyList<TodoListDto> _lists = new List<TodoListDto>();
+    private TodoListDto? _selectedList;
+
+    private bool _isLoadingLists;
+    private bool _showCreateForm;
+
+    private CreateTodoListForm _createListForm = new();
+
+    // ================= TASK STATE =================
+
+    private IReadOnlyList<TodoTaskDto> _tasks = new List<TodoTaskDto>();
+    private bool _isLoadingTasks;
+
+    // hard-code user (giống API)
+    private readonly Guid _ownerUserId =
+        Guid.Parse("7D97D295-C6F0-F011-9685-782B464EB9F6");
+
+    // ================= LIFECYCLE =================
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadListsAsync();
+    }
+
+    // ================= LOAD LISTS =================
+
+    private async Task LoadListsAsync()
+    {
+        _isLoadingLists = true;
+        _lists = await ListApi.GetByOwnerAsync(_ownerUserId);
+        _isLoadingLists = false;
+    }
+
+    // ================= CREATE LIST =================
+
+    private void ShowCreateForm()
+    {
+        _createListForm = new CreateTodoListForm();
+        _showCreateForm = true;
+    }
+
+    private void HideCreateForm()
+    {
+        _showCreateForm = false;
+    }
+
+    private async Task CreateListAsync()
+    {
+        var request = new CreateTodoListRequest(
+            _createListForm.Name,
+            _createListForm.Color
+        );
+
+        await ListApi.CreateAsync(request);
+
+        _showCreateForm = false;
+        await LoadListsAsync();
+    }
+
+    // ================= SELECT LIST + LOAD TASKS =================
+
+    private async Task SelectListAsync(TodoListDto list)
+    {
+        _selectedList = list;
+        await LoadTasksAsync(list.ListId);
+    }
+
+    private async Task LoadTasksAsync(Guid listId)
+    {
+        try
+        {
+            _isLoadingTasks = true;
+            _tasks = await TaskApi.GetByListIdAsync(listId);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            _tasks = new List<TodoTaskDto>();
+        }
+        finally
+        {
+            _isLoadingTasks = false;
+        }
+    }
+}

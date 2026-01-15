@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.UseCases.Lists;
+using TodoApp.Application.UseCases.Tasks;
 
 namespace TodoApp.Application
 {
@@ -20,6 +21,13 @@ namespace TodoApp.Application
             services.AddScoped<SetArchiveTodoListUseCase>();
             services.AddScoped<DeleteTodoListUseCase>();
 
+            // Tasks CRUD
+            services.AddScoped<CreateTodoTaskUseCase>();
+            services.AddScoped<GetTodoTasksByListUseCase>();
+            services.AddScoped<RenameTodoTaskUseCase>();
+            services.AddScoped<ChangeTodoTaskStatusUseCase>();
+            services.AddScoped<ReorderTodoTaskUseCase>();
+            services.AddScoped<DeleteTodoTaskUseCase>();
             // Tasks/Subtasks/Tags: đăng ký sau
             // services.AddScoped<CreateTodoTaskUseCase>(); ...
 

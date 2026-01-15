@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoApp.Application.DTOs.Lists
+namespace TodoApp.Contracts.TodoLists
 {
     public record TodoListDto(
     Guid ListId,

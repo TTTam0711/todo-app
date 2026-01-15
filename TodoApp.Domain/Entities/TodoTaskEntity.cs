@@ -17,22 +17,13 @@ namespace TodoApp.Domain.Entities
         public TodoTaskStatus Status { get; private set; }
         public byte Priority { get; private set; }
 
-        public DateTimeOffset? StartAt { get; private set; }
-        public DateTimeOffset? DueAt { get; private set; }
-        public DateTimeOffset? CompletedAt { get; private set; }
-
-        public int? EstimatedMinutes { get; private set; }
-
-        // Recurring
-        public bool IsRecurring { get; private set; }
-        public string? RecurrenceRule { get; private set; }
-
-        // Sorting in list
         public decimal OrderIndex { get; private set; }
 
+        // Soft delete = state
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedAt { get; private set; }
 
+        // Audit
         public Guid CreatedByUserId { get; private set; }
         public Guid UpdatedByUserId { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -40,29 +31,77 @@ namespace TodoApp.Domain.Entities
 
         public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
 
+        // ===== Domain behavior =====
+
         public void Rename(string title)
         {
+            title = (title ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException("Title is required");
-            Title = title.Trim();
-        }
+                throw new ArgumentException("Task title is required");
 
-        public void MarkDone(DateTimeOffset completedAt)
-        {
-            Status = TodoTaskStatus.Done;
-            CompletedAt = completedAt;
+            Title = title;
+            Touch();
         }
 
         public void ChangeStatus(TodoTaskStatus status)
         {
             Status = status;
-            if (status != TodoTaskStatus.Done) CompletedAt = null;
+            Touch();
         }
 
         public void SoftDelete(DateTime deletedAt)
         {
+            if (IsDeleted) return;
+
             IsDeleted = true;
             DeletedAt = deletedAt;
+            Touch();
+        }
+
+        // ===== Internal setters for Factory =====
+
+        internal void SetIdentity(Guid taskId, Guid listId)
+        {
+            TaskId = taskId;
+            ListId = listId;
+        }
+
+        internal void SetCreated(DateTime createdAt, Guid userId)
+        {
+            CreatedAt = createdAt;
+            UpdatedAt = createdAt;
+            CreatedByUserId = userId;
+            UpdatedByUserId = userId;
+        }
+
+        internal void SetUpdated(DateTime updatedAt, Guid userId)
+        {
+            UpdatedAt = updatedAt;
+            UpdatedByUserId = userId;
+        }
+
+        internal void SetDeleted(bool isDeleted, DateTime? deletedAt)
+        {
+            IsDeleted = isDeleted;
+            DeletedAt = deletedAt;
+        }
+
+        internal void SetOrder(decimal orderIndex) => OrderIndex = orderIndex;
+        internal void SetPriority(byte priority) => Priority = priority;
+        internal void SetRowVersion(byte[] rowVersion) => RowVersion = rowVersion ?? Array.Empty<byte>();
+
+        private void Touch()
+        {
+            UpdatedAt = DateTime.UtcNow;
+        }
+        public void Reorder(decimal newOrderIndex)
+        {
+            if (newOrderIndex < 0)
+                throw new ArgumentException("OrderIndex must be >= 0");
+
+            OrderIndex = newOrderIndex;
+            Touch();
         }
     }
+
 }

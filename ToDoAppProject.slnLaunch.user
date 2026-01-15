@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "TodoApp.Api\\ToDoApp.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "TodoApp.Blazor\\TodoApp.Blazor.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

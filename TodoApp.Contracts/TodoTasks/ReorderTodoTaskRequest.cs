@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoApp.Application.DTOs.Lists
+namespace TodoApp.Contracts.TodoTasks
 {
-    public record UpdateTodoListRequest(string Name, string? Color);
+    public record ReorderTodoTaskRequest(
+        decimal OrderIndex
+    );
 }

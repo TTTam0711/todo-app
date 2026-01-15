@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoApp.Application.DTOs.Lists;
+using TodoApp.Contracts.TodoLists;
 using TodoApp.Application.Interfaces.Repositories;
 using TodoApp.Domain.Factories;
 

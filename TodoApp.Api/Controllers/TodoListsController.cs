@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TodoApp.Application.DTOs.Lists;
+using TodoApp.Contracts.TodoLists;
 using TodoApp.Application.UseCases.Lists;
 
 namespace ToDoApp.Api.Controllers

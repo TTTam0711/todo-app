@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoApp.Application.DTOs.Tasks
+namespace TodoApp.Contracts.TodoTasks
 {
     public record CreateTodoTaskRequest(
-    Guid ListId,
-    string Title,
-    string? Description,
-    byte Priority,
-    DateTimeOffset? DueAt
-);
+        Guid ListId,
+        string Title
+    );
 }
