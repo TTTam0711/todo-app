@@ -12,14 +12,47 @@ namespace TodoApp.Blazor.Services
             _http = http;
         }
 
-        public async Task<IReadOnlyList<TodoTaskDto>> GetByListIdAsync(
+        public async Task<IReadOnlyList<TodoTaskListItemDto>> GetByListIdAsync(
             Guid listId,
             CancellationToken ct = default)
         {
             var url = $"api/todolists/{listId}/tasks";
 
-            return await _http.GetFromJsonAsync<List<TodoTaskDto>>(url, ct)
-                   ?? new List<TodoTaskDto>();
+            return await _http.GetFromJsonAsync<List<TodoTaskListItemDto>>(url, ct)
+                   ?? new List<TodoTaskListItemDto>();
+        }
+        public async Task CreateAsync(Guid listId, CreateTodoTaskRequest request)
+        {
+            var response = await _http.PostAsJsonAsync(
+                $"api/todolists/{listId}/tasks",
+                request
+            );
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task ChangeStatusAsync(
+            Guid taskId,
+            ChangeTodoTaskStatusRequest request)
+        {
+            var response = await _http.PatchAsJsonAsync(
+                $"api/todotasks/{taskId}/status",
+                request
+            );
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task RenameAsync(
+               Guid taskId,
+               RenameTodoTaskRequest request)
+        {
+            var response = await _http.PatchAsJsonAsync(
+                $"api/todotasks/{taskId}/rename",
+                request
+            );
+
+            response.EnsureSuccessStatusCode();
         }
     }
 }

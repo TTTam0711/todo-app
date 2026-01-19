@@ -39,7 +39,10 @@ namespace TodoApp.Application.UseCases.Tasks
                 request.ListId,
                 request.Title,
                 userId,
-                lastOrder + 1
+                lastOrder + 1,
+                request.DueAt,
+                request.Description,
+                request.Priority
             );
 
             await _taskRepo.AddAsync(task, ct);

@@ -1,39 +1,53 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">TodoApp.Blazor</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿<div class="sidebar-card">
+
+    <!-- Decorative cat image (static, NOT user avatar) -->
+    <div class="sidebar-header">
+        <img src="/images/sidebar-cat.png"
+             alt=""
+             class="sidebar-image" />
+        <div class="sidebar-greeting">
+            Hi, Nam Nguyen!
+        </div>
     </div>
-</div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> TodoLists
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
+    <!-- Menu -->
+    <nav class="sidebar-menu">
+        <NavLink href="/"
+                 class="sidebar-item"
+                 Match="NavLinkMatch.All">
+            <span>🏠</span>
+            <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink href="/todolists" class="sidebar-item">
+            <span>📋</span>
+            <span>My Tasks</span>
+        </NavLink>
+
+        <NavLink href="/calendar" class="sidebar-item">
+            <span>📅</span>
+            <span>Calendar</span>
+        </NavLink>
+
+        <NavLink href="/goals" class="sidebar-item">
+            <span>🎯</span>
+            <span>Goals</span>
+        </NavLink>
+
+        <NavLink href="/settings" class="sidebar-item">
+            <span>⚙️</span>
+            <span>Settings</span>
+        </NavLink>
     </nav>
+
+    <!-- Pomodoro -->
+    <div class="sidebar-footer">
+        <div class="pomodoro-card">
+            <div class="pomodoro-time">25:00</div>
+            <button class="pomodoro-btn">
+                Start
+            </button>
+        </div>
+    </div>
+
 </div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

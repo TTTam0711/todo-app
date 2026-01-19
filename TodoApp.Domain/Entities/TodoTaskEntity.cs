@@ -28,7 +28,8 @@ namespace TodoApp.Domain.Entities
         public Guid UpdatedByUserId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
-
+        public DateTimeOffset? DueAt { get; private set; }
+        public DateTimeOffset? CompletedAt { get; private set; }
         public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
 
         // ===== Domain behavior =====
@@ -43,10 +44,54 @@ namespace TodoApp.Domain.Entities
             Touch();
         }
 
-        public void ChangeStatus(TodoTaskStatus status)
+        public void ChangeStatus(TodoTaskStatus newStatus)
         {
-            Status = status;
+            if (Status == newStatus)
+                return;
+
+            ValidateStatusTransition(Status, newStatus);
+
+            Status = newStatus;
+
+            if (newStatus == TodoTaskStatus.Done)
+            {
+                CompletedAt = DateTimeOffset.UtcNow;
+            }
+
             Touch();
+        }
+
+        private static void ValidateStatusTransition(
+            TodoTaskStatus current,
+            TodoTaskStatus next)
+        {
+            var allowed = current switch
+            {
+                TodoTaskStatus.Todo =>
+                    next is TodoTaskStatus.InProgress
+                         or TodoTaskStatus.Cancelled,
+
+                TodoTaskStatus.InProgress =>
+                    next is TodoTaskStatus.Done
+                         or TodoTaskStatus.Blocked
+                         or TodoTaskStatus.Cancelled,
+
+                TodoTaskStatus.Blocked =>
+                    next is TodoTaskStatus.InProgress
+                         or TodoTaskStatus.Cancelled,
+
+                TodoTaskStatus.Done =>
+                    false,        // terminal
+
+                TodoTaskStatus.Cancelled =>
+                    false,        // terminal
+
+                _ => false
+            };
+
+            if (!allowed)
+                throw new InvalidOperationException(
+                    $"Cannot change status from {current} to {next}");
         }
 
         public void SoftDelete(DateTime deletedAt)
@@ -55,6 +100,25 @@ namespace TodoApp.Domain.Entities
 
             IsDeleted = true;
             DeletedAt = deletedAt;
+            Touch();
+        }
+        public void UpdateDescription(string? description)
+        {
+            Description = string.IsNullOrWhiteSpace(description)
+                ? null
+                : description.Trim();
+
+            Touch();
+        }
+
+        public void ChangePriority(byte priority)
+        {
+            if (priority > 5)
+                throw new ArgumentOutOfRangeException(
+                    nameof(priority),
+                    "Priority must be between 0 and 5");
+
+            Priority = priority;
             Touch();
         }
 
@@ -89,7 +153,20 @@ namespace TodoApp.Domain.Entities
         internal void SetOrder(decimal orderIndex) => OrderIndex = orderIndex;
         internal void SetPriority(byte priority) => Priority = priority;
         internal void SetRowVersion(byte[] rowVersion) => RowVersion = rowVersion ?? Array.Empty<byte>();
-
+        internal void SetDueAt(DateTimeOffset? dueAt)
+        {
+            DueAt = dueAt;
+        }
+        internal void SetCompletedAt(DateTimeOffset? completedAt)
+        {
+            CompletedAt = completedAt;
+        }
+        internal void SetDescription(string? description)
+        {
+            Description = string.IsNullOrWhiteSpace(description)
+                ? null
+                : description.Trim();
+        }
         private void Touch()
         {
             UpdatedAt = DateTime.UtcNow;
@@ -101,6 +178,11 @@ namespace TodoApp.Domain.Entities
 
             OrderIndex = newOrderIndex;
             Touch();
+        }
+
+        internal void SetStatus(TodoTaskStatus status)
+        {
+            Status = status;
         }
     }
 

@@ -1,0 +1,158 @@
+﻿@namespace TodoApp.Blazor.Pages.Components
+@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Blazor.Forms
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+@if (!_isExpanded)
+{
+    <!-- COLLAPSED: Add task button -->
+    <div class="add-task-container">
+        <button class="add-task-inline-btn"
+                @onclick="Expand">
+            <span class="add-icon">＋</span>
+            <span>Add task</span>
+        </button>
+    </div>
+}
+else
+{
+    <!-- EXPANDED: Create task form -->
+    <EditForm Model="_form" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="create-task-inline-grid">
+
+            <!-- TITLE -->
+            <InputText class="form-control form-control-sm"
+                       placeholder="Task title…"
+                       @bind-Value="_form.Title"
+                       disabled="@_isSubmitting"
+                       autofocus />
+
+            <!-- STATUS (placeholder column) -->
+            <div></div>
+
+            <!-- DUE DATE -->
+            <InputDate TValue="DateTime?"
+                       class="form-control form-control-sm"
+                       @bind-Value="_form.DueAt"
+                       disabled="@_isSubmitting" />
+
+            <!-- OVERDUE (placeholder column) -->
+            <div></div>
+
+            <!-- PRIORITY -->
+            <InputSelect TValue="byte"
+                         class="form-select form-select-sm"
+                         @bind-Value="_form.Priority"
+                         disabled="@_isSubmitting">
+                <option value="0">No priority</option>
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+                <option value="3">Low</option>
+                <option value="4">Very low</option>
+            </InputSelect>
+
+            <!-- ACTIONS -->
+            <button type="submit"
+                    class="btn btn-primary btn-sm"
+                    disabled="@IsSubmitDisabled">
+                +
+            </button>
+
+            <button type="button"
+                    class="btn btn-light btn-sm"
+                    disabled="@_isSubmitting"
+                    @onclick="Cancel">
+                Cancel
+            </button>
+
+        </div>
+    </EditForm>
+}
+
+@code {
+
+    // ===== PARAMETERS =====
+
+    [Parameter, EditorRequired]
+    public Guid ListId { get; set; }
+
+    [Parameter]
+    public EventCallback OnCreated { get; set; }
+
+    // ===== STATE =====
+
+    private readonly CreateTodoTaskForm _form = new();
+    private bool _isSubmitting;
+    private bool _isExpanded;
+
+    private bool IsSubmitDisabled =>
+        _isSubmitting || string.IsNullOrWhiteSpace(_form.Title);
+
+    // ===== ACTIONS =====
+
+    private void Expand()
+    {
+        _isExpanded = true;
+    }
+
+    private void Cancel()
+    {
+        ResetForm();
+        _isExpanded = false;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (_isSubmitting) return;
+
+        _isSubmitting = true;
+
+        try
+        {
+            // 1️⃣ Convert DateTime? -> DateTimeOffset?
+            DateTimeOffset? dueAtUtc = null;
+
+            if (_form.DueAt.HasValue)
+            {
+                dueAtUtc = new DateTimeOffset(
+                    DateTime.SpecifyKind(
+                        _form.DueAt.Value,
+                        DateTimeKind.Utc
+                    )
+                );
+            }
+
+            // 2️⃣ Tạo request
+            var request = new CreateTodoTaskRequest(
+                ListId,
+                _form.Title.Trim(),
+                _form.Description,
+                _form.Priority,
+                dueAtUtc
+            );
+
+            // 3️⃣ Gọi API
+            await TaskApi.CreateAsync(ListId, request);
+
+            ResetForm();
+            _isExpanded = false;
+
+            await OnCreated.InvokeAsync();
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+
+    private void ResetForm()
+    {
+        _form.Title = string.Empty;
+        _form.Description = null;
+        _form.DueAt = null;
+        _form.Priority = 0;
+    }
+}

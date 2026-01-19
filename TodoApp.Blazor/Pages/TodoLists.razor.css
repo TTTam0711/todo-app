@@ -1,0 +1,196 @@
+﻿.task-table {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-grid-header,
+.task-grid-row {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) /* Title */
+    140px /* Status */
+    110px /* Due */
+    90px /* Overdue */
+    90px; /* Priority */
+    align-items: center;
+    column-gap: 12px;
+}
+
+/* Header */
+.task-grid-header {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Row */
+.task-grid-row {
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 6px;
+}
+
+    .task-grid-row:hover {
+        background: #f9fafb;
+    }
+
+    /* Fix select */
+    .task-grid-row select {
+        width: 100%;
+        max-width: 140px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+/* Overdue */
+.overdue-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+}
+
+/* Priority */
+.priority-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+}
+.overdue-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #991b1b;
+    background: #fee2e2;
+    padding: 4px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* High */
+.priority-1 {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Medium */
+.priority-2 {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Low */
+.priority-3 {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* Fallback */
+.priority-4 {
+    background: #e5e7eb;
+    color: #374151;
+}
+.status-pill {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 6px 28px 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+}
+
+/* Done */
+.status-done {
+    background-color: #e6f4ea;
+    color: #1e7f43;
+}
+
+/* In Progress */
+.status-inprogress {
+    background-color: #e8f1fd;
+    color: #1d4ed8;
+}
+
+/* Todo */
+.status-todo {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+/* Blocked */
+.status-blocked {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Cancelled */
+.status-cancelled {
+    background-color: #f1f5f9;
+    color: #64748b;
+}
+.status-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.status-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 50;
+    min-width: 140px;
+}
+
+.status-option {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.status-option:hover {
+        filter: brightness(0.95);
+}
+.status-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.create-task-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-options {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.add-task-row {
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+.task-grid-row.add-task-row:hover {
+    background: transparent;
+}
+

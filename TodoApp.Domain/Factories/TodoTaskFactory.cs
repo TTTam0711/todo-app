@@ -14,6 +14,8 @@ namespace TodoApp.Domain.Factories
             string title,
             Guid createdByUserId,
             decimal orderIndex,
+            DateTimeOffset? dueAt,
+            string? description,
             byte priority = 0)
         {
             if (listId == Guid.Empty)
@@ -33,9 +35,14 @@ namespace TodoApp.Domain.Factories
             entity.SetCreated(now, createdByUserId);
 
             entity.Rename(title);
+            entity.SetDescription(null);
+            entity.UpdateDescription(description);
+            entity.ChangePriority(priority);
             entity.ChangeStatus(TodoTaskStatus.Todo);
             entity.SetOrder(orderIndex);
             entity.SetPriority(priority);
+            entity.SetDueAt(dueAt);
+            entity.SetCompletedAt(null);
             entity.SetDeleted(false, null);
 
             return entity;
@@ -50,10 +57,13 @@ namespace TodoApp.Domain.Factories
             DateTime? deletedAt,
             decimal orderIndex,
             byte priority,
+            string? description,
             Guid createdByUserId,
             Guid updatedByUserId,
             DateTime createdAt,
             DateTime updatedAt,
+            DateTimeOffset? dueAt,
+            DateTimeOffset? completedAt,
             byte[] rowVersion)
         {
             var entity = new TodoTaskEntity();
@@ -67,8 +77,10 @@ namespace TodoApp.Domain.Factories
             entity.SetRowVersion(rowVersion);
 
             entity.Rename(title);
-            entity.ChangeStatus(status);
-
+            entity.SetDescription(description);
+            entity.SetStatus(status);
+            entity.SetDueAt(dueAt);
+            entity.SetCompletedAt(completedAt);
             return entity;
         }
     }

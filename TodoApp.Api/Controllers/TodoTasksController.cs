@@ -38,23 +38,11 @@ namespace ToDoApp.Api.Controllers
         // GET /api/todolists/{listId}/tasks
         // ================================
         [HttpGet("todolists/{listId:guid}/tasks")]
-        public async Task<ActionResult<IReadOnlyList<TodoTaskDto>>> GetByList(
-            Guid listId,
-            CancellationToken ct)
+        public async Task<ActionResult<IReadOnlyList<TodoTaskListItemDto>>> GetByList(
+                        Guid listId,
+                        CancellationToken ct)
         {
-            var tasks = await _getByList.ExecuteAsync(listId, ct);
-
-            var result = tasks.Select(t => new TodoTaskDto(
-                t.TaskId,
-                t.ListId,
-                t.Title,
-                t.Status.ToString(),
-                t.Priority,
-                t.OrderIndex,
-                t.CreatedAt,
-                t.UpdatedAt
-            ));
-
+            var result = await _getByList.ExecuteAsync(listId, ct);
             return Ok(result);
         }
 

@@ -75,3 +75,24 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR CUSTOM – KHÔNG XUNG ??T */
+.app-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: #f5f3ef;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    flex: 1;
+    padding: 24px;
+    background: #fafafa;
+    overflow: auto;
+}

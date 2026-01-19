@@ -47,10 +47,13 @@ namespace TodoApp.Infrastructure.Mappings
                         src.DeletedAt,
                         src.OrderIndex,
                         src.Priority,
+                        src.Description,
                         src.CreatedByUserId,
                         src.UpdatedByUserId,
                         src.CreatedAt,
                         src.UpdatedAt,
+                        src.DueAt,
+                        src.CompletedAt,
                         src.RowVersion
                     ))
                 .ForAllMembers(opt => opt.Ignore());
@@ -65,7 +68,12 @@ namespace TodoApp.Infrastructure.Mappings
                 .ForMember(d => d.Tags, opt => opt.Ignore())
                 .ForMember(d => d.List, opt => opt.Ignore())
                 .ForMember(d => d.CreatedByUser, opt => opt.Ignore())
-                .ForMember(d => d.UpdatedByUser, opt => opt.Ignore());
+                .ForMember(d => d.UpdatedByUser, opt => opt.Ignore())
+                .ForMember(d => d.DueAt, opt => opt.MapFrom(s => s.DueAt))
+                .ForMember(d => d.CompletedAt, opt => opt.MapFrom(s => s.CompletedAt))
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
+                .ForMember(d => d.Priority, opt => opt.MapFrom(s => s.Priority));
+
 
 
             // ✅ Subtask (ignore navigation Task)

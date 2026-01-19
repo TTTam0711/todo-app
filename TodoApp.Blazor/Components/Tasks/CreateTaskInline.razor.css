@@ -1,0 +1,85 @@
+﻿.create-task-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-options {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+    .task-options select,
+    .task-options input {
+        max-width: 160px;
+    }
+.create-task-inline {
+    margin-bottom: 12px;
+}
+
+.create-task-placeholder {
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #6b7280;
+    cursor: text;
+}
+
+    .create-task-placeholder:hover {
+        background: #f3f4f6;
+    }
+
+.create-task-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+    .create-task-row input,
+    .create-task-row select {
+        height: 32px;
+    }
+
+.create-task-inline-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) 140px 110px 90px 90px auto auto;
+    gap: 8px;
+    align-items: center;
+}
+.add-task-container {
+    display: flex;
+    align-items: center; /* hoặc flex-end nếu bạn muốn sát phải */
+    background: transparent; /* QUAN TRỌNG */
+}
+
+.add-task-inline-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #374151;
+    padding: 4px 10px;
+    border-radius: 999px; /* BO TRÒN HOÀN TOÀN */
+
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+    .add-task-inline-btn:hover {
+        background: #f9fafb;
+        border-color: #c7d2fe;
+        color: #1d4ed8;
+    }
+
+    .add-task-inline-btn:active {
+        background: #eef2ff;
+    }
+
+    .add-task-inline-btn .add-icon {
+        font-size: 0.95rem;
+        line-height: 1;
+        color: #6366f1;
+    }
