@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Contracts.TodoTasks.Enums;
 
 namespace TodoApp.Contracts.TodoTasks
 {
@@ -10,7 +11,7 @@ namespace TodoApp.Contracts.TodoTasks
         Guid ListId,
         string Title,
         string? Description,
-        byte Priority,
+        TodoTaskPriority Priority,
        DateTimeOffset? DueAt
     );
 }

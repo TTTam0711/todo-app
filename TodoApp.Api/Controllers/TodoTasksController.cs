@@ -17,12 +17,15 @@ namespace ToDoApp.Api.Controllers
         private readonly ChangeTodoTaskStatusUseCase _changeStatus;
         private readonly ReorderTodoTaskUseCase _reorder;
         private readonly DeleteTodoTaskUseCase _delete;
-
+        private readonly ChangeTodoTaskDueDateUseCase _changeDueDate;
+        private readonly ChangeTodoTaskPriorityUseCase _changePriority;
         public TodoTasksController(
             CreateTodoTaskUseCase create,
             GetTodoTasksByListUseCase getByList,
             RenameTodoTaskUseCase rename,
             ChangeTodoTaskStatusUseCase changeStatus,
+            ChangeTodoTaskDueDateUseCase changeDueDate,
+            ChangeTodoTaskPriorityUseCase changePriority,
             ReorderTodoTaskUseCase reorder,
             DeleteTodoTaskUseCase delete)
         {
@@ -30,6 +33,8 @@ namespace ToDoApp.Api.Controllers
             _getByList = getByList;
             _rename = rename;
             _changeStatus = changeStatus;
+            _changeDueDate = changeDueDate;
+            _changePriority = changePriority;
             _reorder = reorder;
             _delete = delete;
         }
@@ -93,18 +98,54 @@ namespace ToDoApp.Api.Controllers
             [FromBody] ChangeTodoTaskStatusRequest request,
             CancellationToken ct)
         {
-            if (!Enum.TryParse<TodoTaskStatus>(
-                    request.Status,
-                    ignoreCase: true,
-                    out var status))
-            {
-                return BadRequest("Invalid task status");
-            }
+            await _changeStatus.ExecuteAsync(
+                taskId,
+                request.Status,   // <-- Contract enum
+                ct);
 
-            await _changeStatus.ExecuteAsync(taskId, status, ct);
             return NoContent();
         }
 
+        // PATCH: api/todotasks/{taskId}/duedate
+        [HttpPatch("todotasks/{taskId:guid}/due")]
+        public async Task<IActionResult> ChangeDueDate(
+            Guid taskId,
+            [FromBody] ChangeTodoTaskDueDateRequest request,
+            CancellationToken ct)
+        {
+            await _changeDueDate.ExecuteAsync(
+                taskId,
+                request.DueAt,
+                ct);
+
+            return NoContent();
+        }
+
+        // PATCH: api/todotasks/{taskId}/priority
+        [HttpPatch("todotasks/{taskId:guid}/priority")]
+        public async Task<IActionResult> ChangePriority(
+            Guid taskId,
+            [FromBody] ChangeTodoTaskPriorityRequest request,
+            CancellationToken ct)
+        {
+            try
+            {
+                await _changePriority.ExecuteAsync(
+                 taskId,
+                 request.Priority, 
+                 ct
+             );
+                return NoContent();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message,
+                    allowedRange = "0–4"
+                });
+            }
+        }
         // ================================
         // PATCH /api/todotasks/{taskId}/reorder
         // ================================
@@ -123,9 +164,7 @@ namespace ToDoApp.Api.Controllers
         // DELETE /api/todotasks/{taskId}
         // ================================
         [HttpDelete("todotasks/{taskId:guid}")]
-        public async Task<IActionResult> Delete(
-            Guid taskId,
-            CancellationToken ct)
+        public async Task<IActionResult> Delete(Guid taskId, CancellationToken ct)
         {
             await _delete.ExecuteAsync(taskId, ct);
             return NoContent();

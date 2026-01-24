@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoApp.Domain.Entities
+namespace TodoApp.Domain.Entities.Enums
 {
     public enum TodoTaskStatus
     {

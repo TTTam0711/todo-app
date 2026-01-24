@@ -1,0 +1,86 @@
+﻿/* ================= STATUS WRAPPER ================= */
+
+.status-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* ================= STATUS PILL ================= */
+
+.status-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background: #f3f4f6;
+    color: #374151;
+    transition: filter 0.15s ease, background 0.15s ease;
+}
+
+    .status-pill:hover {
+        filter: brightness(0.95);
+    }
+
+/* ================= STATUS COLORS ================= */
+
+.status-todo {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.status-inprogress {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-done {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ================= DISABLED ================= */
+
+.status-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ================= STATUS MENU ================= */
+
+.status-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 50;
+    min-width: 140px;
+}
+
+/* ================= STATUS OPTION ================= */
+
+.status-option {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+}
+
+    .status-option:hover {
+        filter: brightness(0.95);
+    }

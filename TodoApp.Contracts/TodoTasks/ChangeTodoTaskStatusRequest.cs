@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Contracts.TodoTasks.Enums;
 
 namespace TodoApp.Contracts.TodoTasks
 {
     public record ChangeTodoTaskStatusRequest(
-        string Status
-    );
+    TodoTaskStatus Status
+);
 }

@@ -1,0 +1,70 @@
+﻿@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<div class="priority-cell" @onclick:stopPropagation="true">
+
+    <button class="priority-badge priority-@((int)Task.Priority)"
+            @onclick="TogglePriority">
+        @(Task.Priority == TodoTaskPriority.None
+                ? "—"
+                : GetPriorityText(Task.Priority))
+    </button>
+
+    @if (_priorityOpen)
+    {
+        <div class="priority-menu">
+            @foreach (var p in Enum.GetValues<TodoTaskPriority>())
+            {
+                <div class="priority-option priority-@((int)p)"
+                     @onclick="() => ChangePriorityAsync(p)">
+                    @(p == TodoTaskPriority.None ? "None" : GetPriorityText(p))
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+
+@code {
+
+    [Parameter, EditorRequired]
+    public TodoTaskListItemDto Task { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnChanged { get; set; }
+
+    private bool _priorityOpen;
+
+    private void TogglePriority()
+    {
+        _priorityOpen = !_priorityOpen;
+       
+    }
+
+    
+
+    private async Task ChangePriorityAsync(TodoTaskPriority priority)
+    {
+        _priorityOpen = false;
+
+        await TaskApi.ChangePriorityAsync(
+            Task.TaskId,
+            new ChangeTodoTaskPriorityRequest(priority));
+
+        await OnChanged.InvokeAsync();
+    }
+
+    
+
+    private static string GetPriorityText(TodoTaskPriority priority) => priority switch
+    {
+        TodoTaskPriority.High => "High",
+        TodoTaskPriority.Medium => "Medium",
+        TodoTaskPriority.Low => "Low",
+        TodoTaskPriority.Optional => "Optional",
+        _ => "—"
+    };
+}

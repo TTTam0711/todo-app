@@ -1,0 +1,87 @@
+﻿.priority-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* BADGE */
+
+.priority-badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+}
+
+    .priority-badge:hover {
+        filter: brightness(0.95);
+    }
+
+    .priority-badge.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+/* DROPDOWN */
+
+.priority-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 50;
+    min-width: 140px;
+}
+
+/* OPTION */
+
+.priority-option {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .priority-option:hover {
+        filter: brightness(0.95);
+    }
+
+/* COLORS */
+
+.priority-0 {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.priority-1 {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.priority-2 {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.priority-3 {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.priority-4 {
+    background: #e0f2fe;
+    color: #0369a1;
+}

@@ -3,72 +3,44 @@
   "WorkspaceRootPath": "D:\\todo-app\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\createtaskinline.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\createtaskinline.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskactionscell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskactionscell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|d:\\todo-app\\todoapp.contracts\\todolists\\createtodolistrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|solutionrelative:todoapp.contracts\\todolists\\createtodolistrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskactionscell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskactionscell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|d:\\todo-app\\todoapp.domain\\factories\\todotaskfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|solutionrelative:todoapp.domain\\factories\\todotaskfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskrow.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskrow.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7230265-10D6-43DE-A4C8-95A74FD3FA12}|TodoApp.Application\\TodoApp.Application.csproj|d:\\todo-app\\todoapp.application\\usecases\\tasks\\createtodotaskusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7230265-10D6-43DE-A4C8-95A74FD3FA12}|TodoApp.Application\\TodoApp.Application.csproj|solutionrelative:todoapp.application\\usecases\\tasks\\createtodotaskusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|d:\\todo-app\\todoapp.contracts\\todotasks\\createtodotaskrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|solutionrelative:todoapp.contracts\\todotasks\\createtodotaskrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\createtaskinline.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\createtaskinline.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\forms\\createtodotaskform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\forms\\createtodotaskform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\services\\todolistapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\services\\todolistapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskprioritycell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskprioritycell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\todolists.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\todolists.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\forms\\createtodolistform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\forms\\createtodolistform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\services\\todotaskapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\services\\todotaskapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskstatuscell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskstatuscell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|d:\\todo-app\\todoapp.domain\\entities\\todotaskentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|solutionrelative:todoapp.domain\\entities\\todotaskentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskprioritycell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskprioritycell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|d:\\todo-app\\todoapp.infrastructure\\mappings\\todomappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|solutionrelative:todoapp.infrastructure\\mappings\\todomappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskduecell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskduecell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8EC72751-A1FD-B5A5-25B7-DF7492F37F58}|TodoApp.Api\\ToDoApp.Api.csproj|d:\\todo-app\\todoapp.api\\controllers\\todotaskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8EC72751-A1FD-B5A5-25B7-DF7492F37F58}|TodoApp.Api\\ToDoApp.Api.csproj|solutionrelative:todoapp.api\\controllers\\todotaskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskstatuscell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskstatuscell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -78,212 +50,133 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CreateTaskInline.razor.css",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor.css",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor.css",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor.css",
-              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor.css",
-              "ViewState": "AgIAACMAAAAAAAAAAAAiwDIAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-18T18:23:30.433Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CreateTaskInline.razor",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor",
-              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\CreateTaskInline.razor",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB0AAAAjAAAAAAAAAA==",
+              "Title": "TaskActionsCell.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAwBIAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-18T18:08:39.786Z",
+              "WhenOpened": "2026-01-24T08:06:41.232Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CreateTodoListRequest.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Contracts\\TodoLists\\CreateTodoListRequest.cs",
-              "RelativeDocumentMoniker": "TodoApp.Contracts\\TodoLists\\CreateTodoListRequest.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Contracts\\TodoLists\\CreateTodoListRequest.cs",
-              "RelativeToolTip": "TodoApp.Contracts\\TodoLists\\CreateTodoListRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:42:15.476Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CreateTodoTaskRequest.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Contracts\\TodoTasks\\CreateTodoTaskRequest.cs",
-              "RelativeDocumentMoniker": "TodoApp.Contracts\\TodoTasks\\CreateTodoTaskRequest.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Contracts\\TodoTasks\\CreateTodoTaskRequest.cs",
-              "RelativeToolTip": "TodoApp.Contracts\\TodoTasks\\CreateTodoTaskRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:30:19.13Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CreateTodoTaskUseCase.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Application\\UseCases\\Tasks\\CreateTodoTaskUseCase.cs",
-              "RelativeDocumentMoniker": "TodoApp.Application\\UseCases\\Tasks\\CreateTodoTaskUseCase.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Application\\UseCases\\Tasks\\CreateTodoTaskUseCase.cs",
-              "RelativeToolTip": "TodoApp.Application\\UseCases\\Tasks\\CreateTodoTaskUseCase.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAowCoAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T16:35:42.455Z"
+              "Title": "TaskActionsCell.razor.css",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor.css",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor.css",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor.css",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskActionsCell.razor.css",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAqwGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-24T07:47:25.34Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "TodoTaskFactory.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Domain\\Factories\\TodoTaskFactory.cs",
-              "RelativeDocumentMoniker": "TodoApp.Domain\\Factories\\TodoTaskFactory.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Domain\\Factories\\TodoTaskFactory.cs",
-              "RelativeToolTip": "TodoApp.Domain\\Factories\\TodoTaskFactory.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAQwDQAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:29:58.651Z"
+              "Title": "TaskRow.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskRow.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskRow.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskRow.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskRow.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-23T08:13:06.96Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CreateTodoTaskForm.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Forms\\CreateTodoTaskForm.cs",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Forms\\CreateTodoTaskForm.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Forms\\CreateTodoTaskForm.cs",
-              "RelativeToolTip": "TodoApp.Blazor\\Forms\\CreateTodoTaskForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T18:12:38.753Z"
+              "DocumentIndex": 3,
+              "Title": "TaskPriorityCell.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
+              "ViewState": "AgIAAB0AAAAAAAAAAADwvysAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-23T08:50:26.084Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "TodoListApiClient.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Services\\TodoListApiClient.cs",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Services\\TodoListApiClient.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Services\\TodoListApiClient.cs",
-              "RelativeToolTip": "TodoApp.Blazor\\Services\\TodoListApiClient.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAiwBoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:43:23.35Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "TodoLists.razor.css",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "RelativeToolTip": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAAAMIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-18T15:21:21.242Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "TodoLists.razor",
               "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor",
               "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\TodoLists.razor",
               "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor",
               "RelativeToolTip": "TodoApp.Blazor\\Pages\\TodoLists.razor",
-              "ViewState": "AgIAALMAAAAAAAAAAAAhwMUAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAGIAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-18T15:07:36.562Z"
+              "WhenOpened": "2026-01-23T08:15:42.246Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "CreateTodoListForm.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Forms\\CreateTodoListForm.cs",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Forms\\CreateTodoListForm.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Forms\\CreateTodoListForm.cs",
-              "RelativeToolTip": "TodoApp.Blazor\\Forms\\CreateTodoListForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:42:46.124Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "TodoTaskApiClient.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Services\\TodoTaskApiClient.cs",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Services\\TodoTaskApiClient.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Services\\TodoTaskApiClient.cs",
-              "RelativeToolTip": "TodoApp.Blazor\\Services\\TodoTaskApiClient.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAQwDgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:30:59.584Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "TodoTaskEntity.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Domain\\Entities\\TodoTaskEntity.cs",
-              "RelativeDocumentMoniker": "TodoApp.Domain\\Entities\\TodoTaskEntity.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Domain\\Entities\\TodoTaskEntity.cs",
-              "RelativeToolTip": "TodoApp.Domain\\Entities\\TodoTaskEntity.cs",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAuwLoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:29:40.902Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "TodoMappingProfile.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Infrastructure\\Mappings\\TodoMappingProfile.cs",
-              "RelativeDocumentMoniker": "TodoApp.Infrastructure\\Mappings\\TodoMappingProfile.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Infrastructure\\Mappings\\TodoMappingProfile.cs",
-              "RelativeToolTip": "TodoApp.Infrastructure\\Mappings\\TodoMappingProfile.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAYwHUAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T17:29:20.691Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "TodoTasksController.cs",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Api\\Controllers\\TodoTasksController.cs",
-              "RelativeDocumentMoniker": "TodoApp.Api\\Controllers\\TodoTasksController.cs",
-              "ToolTip": "D:\\todo-app\\TodoApp.Api\\Controllers\\TodoTasksController.cs",
-              "RelativeToolTip": "TodoApp.Api\\Controllers\\TodoTasksController.cs",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAAAEUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T16:36:13.245Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "index.html",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\wwwroot\\index.html",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\wwwroot\\index.html",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\wwwroot\\index.html",
-              "RelativeToolTip": "TodoApp.Blazor\\wwwroot\\index.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-01-18T15:17:37.995Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "app.css",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\wwwroot\\css\\app.css",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\wwwroot\\css\\app.css",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\wwwroot\\css\\app.css",
-              "RelativeToolTip": "TodoApp.Blazor\\wwwroot\\css\\app.css",
-              "ViewState": "AgIAAPoAAAAAAAAAAAAAAAYBAAAAAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "TodoLists.razor.css",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
+              "RelativeToolTip": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-18T15:08:36.001Z"
+              "WhenOpened": "2026-01-24T07:43:11.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TaskStatusCell.razor.css",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor.css",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor.css",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor.css",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor.css",
+              "ViewState": "AgIAADkAAAAAAAAAAAAqwFYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-24T07:46:14.704Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TaskPriorityCell.razor.css",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-24T07:45:39.346Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TaskDueCell.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskDueCell.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskDueCell.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskDueCell.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskDueCell.razor",
+              "ViewState": "AgIAADEAAAAAAAAAAAAUwDwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-23T08:55:26.035Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TaskStatusCell.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskStatusCell.razor",
+              "ViewState": "AgIAADoAAAAAAAAAAAAUwFUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-23T08:43:20.367Z"
             }
           ]
         }

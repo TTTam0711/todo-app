@@ -4,24 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.Interfaces.Repositories;
+using TodoApp.Application.Mappings;
+using TodoApp.Domain.Entities.Enums;
 
 namespace TodoApp.Application.UseCases.Tasks
 {
-    public class DeleteTodoTaskUseCase
+    public class ChangeTodoTaskPriorityUseCase
     {
         private readonly ITodoTaskRepository _repo;
 
-        public DeleteTodoTaskUseCase(ITodoTaskRepository repo)
+        public ChangeTodoTaskPriorityUseCase(ITodoTaskRepository repo)
         {
             _repo = repo;
         }
 
-        public async Task ExecuteAsync(Guid taskId, CancellationToken ct = default)
+        public async Task ExecuteAsync(
+            Guid taskId,
+            Contracts.TodoTasks.Enums.TodoTaskPriority priority,
+            CancellationToken ct = default)
         {
             var task = await _repo.GetByIdAsync(taskId, ct)
                 ?? throw new KeyNotFoundException("TodoTask not found");
 
-            task.SoftDelete();
+            var domainPriority =
+                TodoTaskPriorityMapper.ToDomain(priority);
+
+            task.ChangePriority(domainPriority);
 
             await _repo.UpdateAsync(task, ct);
         }

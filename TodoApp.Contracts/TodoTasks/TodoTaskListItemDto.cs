@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Contracts.TodoTasks.Enums;
 
 namespace TodoApp.Contracts.TodoTasks
 {
@@ -11,16 +12,16 @@ namespace TodoApp.Contracts.TodoTasks
     Guid ListId,
 
     string Title,
-    string Status,
+    TodoTaskStatus Status,
     string? Description,
-    byte Priority,
+    TodoTaskPriority Priority,
     decimal OrderIndex,
 
     DateTimeOffset? DueAt,
     DateTimeOffset? CompletedAt,
 
     bool IsOverdue,
-    IReadOnlyList<string> AllowedStatusTransitions
+    IReadOnlyList<TodoTaskStatus> AllowedStatusTransitions
 );
 
 }

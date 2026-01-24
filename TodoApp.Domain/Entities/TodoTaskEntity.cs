@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Domain.Entities.Enums;
 
 namespace TodoApp.Domain.Entities
 {
@@ -15,7 +16,7 @@ namespace TodoApp.Domain.Entities
         public string? Description { get; private set; }
 
         public TodoTaskStatus Status { get; private set; }
-        public byte Priority { get; private set; }
+        public TodoTaskPriority Priority { get; private set; }
 
         public decimal OrderIndex { get; private set; }
 
@@ -36,6 +37,7 @@ namespace TodoApp.Domain.Entities
 
         public void Rename(string title)
         {
+            EnsureNotDeleted();
             title = (title ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Task title is required");
@@ -43,9 +45,15 @@ namespace TodoApp.Domain.Entities
             Title = title;
             Touch();
         }
-
+        private void EnsureNotDeleted()
+        {
+            if (IsDeleted)
+                throw new InvalidOperationException(
+                    "Cannot modify a deleted todo task.");
+        }
         public void ChangeStatus(TodoTaskStatus newStatus)
         {
+            EnsureNotDeleted();
             if (Status == newStatus)
                 return;
 
@@ -60,7 +68,33 @@ namespace TodoApp.Domain.Entities
 
             Touch();
         }
+        public void ChangeDueDate(DateTimeOffset? dueAt)
+        {
+            EnsureNotDeleted();
+            // 1️⃣ Terminal state protection
+            if (Status is TodoTaskStatus.Done or TodoTaskStatus.Cancelled)
+            {
+                throw new InvalidOperationException(
+                    "Cannot change due date of a completed or cancelled task.");
+            }
 
+            // 2️⃣ Normalize input
+            if (dueAt.HasValue)
+            {
+                // Normalize to UTC if needed
+                dueAt = dueAt.Value.ToUniversalTime();
+            }
+
+            // 3️⃣ No-op protection (avoid dirty write)
+            if (DueAt == dueAt)
+                return;
+
+            // 4️⃣ Apply change
+            DueAt = dueAt;
+
+            // 5️⃣ Audit
+            Touch();
+        }
         private static void ValidateStatusTransition(
             TodoTaskStatus current,
             TodoTaskStatus next)
@@ -94,12 +128,14 @@ namespace TodoApp.Domain.Entities
                     $"Cannot change status from {current} to {next}");
         }
 
-        public void SoftDelete(DateTime deletedAt)
+        public void SoftDelete()
         {
-            if (IsDeleted) return;
+            if (IsDeleted)
+                throw new InvalidOperationException(
+                    "Todo task has already been deleted.");
 
             IsDeleted = true;
-            DeletedAt = deletedAt;
+            DeletedAt = DateTime.UtcNow;
             Touch();
         }
         public void UpdateDescription(string? description)
@@ -111,13 +147,9 @@ namespace TodoApp.Domain.Entities
             Touch();
         }
 
-        public void ChangePriority(byte priority)
+        public void ChangePriority(TodoTaskPriority priority)
         {
-            if (priority > 5)
-                throw new ArgumentOutOfRangeException(
-                    nameof(priority),
-                    "Priority must be between 0 and 5");
-
+            EnsureNotDeleted();
             Priority = priority;
             Touch();
         }
@@ -151,7 +183,10 @@ namespace TodoApp.Domain.Entities
         }
 
         internal void SetOrder(decimal orderIndex) => OrderIndex = orderIndex;
-        internal void SetPriority(byte priority) => Priority = priority;
+        internal void SetPriority(TodoTaskPriority priority)
+        {
+            Priority = priority;
+        }
         internal void SetRowVersion(byte[] rowVersion) => RowVersion = rowVersion ?? Array.Empty<byte>();
         internal void SetDueAt(DateTimeOffset? dueAt)
         {
@@ -184,6 +219,24 @@ namespace TodoApp.Domain.Entities
         {
             Status = status;
         }
+
+        public IReadOnlyList<TodoTaskStatus> GetAllowedStatusTransitions()
+        {
+            return Status switch
+            {
+                TodoTaskStatus.Todo =>
+                    new[] { TodoTaskStatus.InProgress, TodoTaskStatus.Cancelled },
+
+                TodoTaskStatus.InProgress =>
+                    new[] { TodoTaskStatus.Done, TodoTaskStatus.Blocked, TodoTaskStatus.Cancelled },
+
+                TodoTaskStatus.Blocked =>
+                    new[] { TodoTaskStatus.InProgress, TodoTaskStatus.Cancelled },
+
+                _ => Array.Empty<TodoTaskStatus>()
+            };
+        }
+
     }
 
 }

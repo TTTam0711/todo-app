@@ -26,6 +26,8 @@ namespace TodoApp.Application
             services.AddScoped<GetTodoTasksByListUseCase>();
             services.AddScoped<RenameTodoTaskUseCase>();
             services.AddScoped<ChangeTodoTaskStatusUseCase>();
+            services.AddScoped<ChangeTodoTaskDueDateUseCase>();
+            services.AddScoped<ChangeTodoTaskPriorityUseCase>();
             services.AddScoped<ReorderTodoTaskUseCase>();
             services.AddScoped<DeleteTodoTaskUseCase>();
             // Tasks/Subtasks/Tags: đăng ký sau

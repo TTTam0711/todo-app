@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Domain.Entities;
+using TodoApp.Domain.Entities.Enums;
 
 namespace TodoApp.Domain.Factories
 {
@@ -16,7 +17,7 @@ namespace TodoApp.Domain.Factories
             decimal orderIndex,
             DateTimeOffset? dueAt,
             string? description,
-            byte priority = 0)
+            TodoTaskPriority priority = TodoTaskPriority.None)
         {
             if (listId == Guid.Empty)
                 throw new ArgumentException("ListId is required");
@@ -40,7 +41,6 @@ namespace TodoApp.Domain.Factories
             entity.ChangePriority(priority);
             entity.ChangeStatus(TodoTaskStatus.Todo);
             entity.SetOrder(orderIndex);
-            entity.SetPriority(priority);
             entity.SetDueAt(dueAt);
             entity.SetCompletedAt(null);
             entity.SetDeleted(false, null);
@@ -56,7 +56,7 @@ namespace TodoApp.Domain.Factories
             bool isDeleted,
             DateTime? deletedAt,
             decimal orderIndex,
-            byte priority,
+           TodoTaskPriority priority,
             string? description,
             Guid createdByUserId,
             Guid updatedByUserId,

@@ -54,5 +54,34 @@ namespace TodoApp.Blazor.Services
 
             response.EnsureSuccessStatusCode();
         }
+        public async Task ChangeDueDateAsync(
+            Guid taskId,
+            ChangeTodoTaskDueDateRequest request)
+        {
+            await _http.PatchAsJsonAsync(
+                $"api/todotasks/{taskId}/due",
+                request);
+        }
+        public async Task ChangePriorityAsync(
+            Guid taskId,
+            ChangeTodoTaskPriorityRequest request,
+            CancellationToken ct = default)
+        {
+            var response = await _http.PatchAsJsonAsync(
+                $"api/todotasks/{taskId}/priority",
+                request,
+                ct);
+
+            response.EnsureSuccessStatusCode();
+        }
+        public async Task DeleteAsync(Guid taskId, CancellationToken ct = default)
+        {
+            var response = await _http.DeleteAsync(
+                $"api/todotasks/{taskId}",
+                ct);
+
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }

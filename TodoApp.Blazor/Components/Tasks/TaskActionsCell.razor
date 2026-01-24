@@ -1,0 +1,54 @@
+﻿@using TodoApp.Blazor.Services
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<div class="task-actions-cell" @onclick:stopPropagation="true">
+
+    <button class="kebab-button @(_actionsOpen ? "active" : "")"
+            @onclick="ToggleActions">
+        ⋯
+    </button>
+
+    @if (_actionsOpen)
+    {
+        <div class="actions-menu">
+            <div class="action-item">
+                ✏️ Edit
+            </div>
+
+            <div class="action-item">
+                📄 Duplicate
+            </div>
+
+            <div class="action-item delete"
+                 @onclick="DeleteAsync">
+                🗑 Delete
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+@code {
+    [Parameter, EditorRequired]
+    public Guid TaskId { get; set; }
+
+    [Parameter]
+    public EventCallback<Guid> OnDeleted { get; set; }
+
+    private bool _actionsOpen;
+
+    private void ToggleActions()
+    {
+        _actionsOpen = !_actionsOpen;
+    }
+
+    private async Task DeleteAsync()
+    {
+        _actionsOpen = false;
+        await TaskApi.DeleteAsync(TaskId);
+        await OnDeleted.InvokeAsync(TaskId);
+    }
+}

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.Interfaces.Repositories;
+using TodoApp.Application.Mappings;
 using TodoApp.Contracts.TodoTasks;
+using TodoApp.Domain.Entities.Enums;
 using TodoApp.Domain.Factories;
 
 namespace TodoApp.Application.UseCases.Tasks
@@ -42,7 +44,7 @@ namespace TodoApp.Application.UseCases.Tasks
                 lastOrder + 1,
                 request.DueAt,
                 request.Description,
-                request.Priority
+                TodoTaskPriorityMapper.ToDomain(request.Priority)
             );
 
             await _taskRepo.AddAsync(task, ct);

@@ -1,0 +1,76 @@
+﻿@using TodoApp.Contracts.TodoTasks
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="due-date-cell" @onclick:stopPropagation="true">
+
+    @if (_isEditing)
+    {
+        <input type="date"
+               class="form-control form-control-sm"
+               value="@_editingDateString"
+               @onchange="OnDateChanged"
+               autofocus />
+    }
+    else
+    {
+        <span @ondblclick="StartEdit">
+            @(Task.DueAt.HasValue
+                    ? FormatDue(Task.DueAt.Value)
+                    : "—")
+    </span>
+        }
+
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public TodoTaskListItemDto Task { get; set; } = default!;
+
+    /// <summary>
+    /// Parent chịu trách nhiệm gọi API + reload list
+    /// </summary>
+    [Parameter]
+    public EventCallback<DateTimeOffset?> OnSaveRequested { get; set; }
+
+    private bool _isEditing;
+    private string? _editingDateString;
+
+    private void StartEdit()
+    {
+        _isEditing = true;
+        _editingDateString = Task.DueAt?.LocalDateTime.ToString("yyyy-MM-dd");
+    }
+
+    private async Task OnDateChanged(ChangeEventArgs e)
+    {
+        _editingDateString = e.Value?.ToString();
+
+        DateTimeOffset? dueAt = null;
+
+        if (DateTime.TryParse(_editingDateString, out var date))
+        {
+            dueAt = new DateTimeOffset(
+                date,
+                TimeZoneInfo.Local.GetUtcOffset(DateTime.Now));
+        }
+
+        _isEditing = false;
+
+        if (OnSaveRequested.HasDelegate)
+        {
+            await OnSaveRequested.InvokeAsync(dueAt);
+        }
+    }
+
+    private static string FormatDue(DateTimeOffset due)
+    {
+        var local = due.ToLocalTime().Date;
+        var today = DateTime.Today;
+
+        if (local == today) return "Today";
+        if (local == today.AddDays(1)) return "Tomorrow";
+
+        return local.ToString("dd MMM");
+    }
+}

@@ -2,10 +2,11 @@
 @page "/todolists"
 
 @using Microsoft.AspNetCore.Components.Forms
+@using TodoApp.Blazor.Forms
+@using TodoApp.Blazor.Components.Tasks
 @using TodoApp.Contracts.TodoLists
 @using TodoApp.Contracts.TodoTasks
-@using TodoApp.Blazor.Forms
-@using TodoApp.Blazor.Pages.Components
+
 @inject TodoApp.Blazor.Services.TodoListApiClient ListApi
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 
@@ -78,128 +79,54 @@
     <!-- ================= RIGHT PANEL ================= -->
     <div class="todo-detail-panel">
         @if (_selectedList == null)
+{
+    <p>Select a list</p>
+}
+else if (_isLoadingTasks)
+{
+    <p>Loading tasks...</p>
+}
+else
+{
+    <div class="task-table">
+
+        <!-- HEADER -->
+        <div class="task-grid-header">
+            <div>Task</div>
+            <div>Status</div>
+            <div>Due</div>
+            <div>Overdue</div>
+            <div>Priority</div>
+            <div class="col-actions-header"></div>
+        </div>
+
+        <!-- TASK ROWS -->
+        @if (_tasks.Count == 0)
         {
-            <p>Select a list</p>
+            <div class="task-grid-row empty-row">
+                <span class="text-muted">No tasks yet</span>
+            </div>
         }
         else
         {
-
-            <!-- ===== TASK LIST ===== -->
-            @if (_isLoadingTasks)
+            @foreach (var task in _tasks)
             {
-                <p>Loading tasks...</p>
-            }
-            else if (_tasks.Count == 0)
-            {
-                <p>No tasks</p>
-            }
-            else
-            {
-                <div class="task-table">
-
-                    <!-- HEADER (DUY NHẤT 1 LẦN) -->
-                    <div class="task-grid-header">
-                        <div>Task</div>
-                        <div>Status</div>
-                        <div>Due</div>
-                        <div>Overdue</div>
-                        <div>Priority</div>
-                    </div>
-
-                    @foreach (var task in _tasks)
-                    {
                         <div class="task-grid-row">
-
-                            <div class="task-title">
-
-                                @if (_editingTaskId == task.TaskId)
-                                {
-                                    <input class="form-control form-control-sm"
-                                           @bind="_editingTaskTitle"
-                                           @bind:event="oninput"
-                                           @onkeydown="e => OnRenameKeyDownAsync(e, task)"
-                                           @onblur="CancelRename"
-                                           autofocus />
-                                }
-                                else
-                                {
-                                    <span @ondblclick="() => StartRename(task)">
-                                        @task.Title
-                                    </span>
-                                }
-
-                            </div>
-
-                            <div class="status-wrapper" @onclick:stopPropagation="true">
-
-                                <button class="status-pill
-                               @GetStatusClass(task.Status)
-                               @(IsFinalStatus(task.Status) ? "status-disabled" : "")"
-                                        disabled="@IsFinalStatus(task.Status)"
-                                        @onclick="() => ToggleStatusMenu(task.TaskId)">
-
-                                    @GetStatusText(task.Status)
-                                </button>
-
-                                @if (_openStatusTaskId == task.TaskId && !IsFinalStatus(task.Status))
-                                {
-                                    <div class="status-menu">
-                                        @foreach (var s in task.AllowedStatusTransitions)
-                                        {
-                                            <div class="status-option @GetStatusClass(s)"
-                                                 @onclick="() => ChangeStatusAsync(task, s)">
-                                                @GetStatusText(s)
-                                            </div>
-                                        }
-                                    </div>
-                                }
-
+                            <TaskRow Task="task"
+                                     OnChanged="ReloadTasks" />
                         </div>
-
-                        <div>
-                            @(task.DueAt.HasValue
-                                                ? FormatDue(task.DueAt.Value)
-                                                : "—")
-                </div>
-
-                            <div>
-                    @if (task.IsOverdue)
-                                {
-                                    <span class="overdue-badge" title="Overdue">
-                                        ⏰ Overdue
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="text-muted">—</span>
-                                }
-                            </div>
-
-                            <div class="col-priority">
-                                @if (task.Priority > 0)
-                                {
-                                    <span class="priority-badge priority-@task.Priority">
-                                        @GetPriorityText(task.Priority)
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="text-muted">—</span>
-                                }
-                            </div>
-
-                        </div>
-                    }
-
-                    <!-- ➕ ADD TASK ROW -->
-                    <div class="task-grid-row add-task-row">
-                        <CreateTaskInline ListId="_selectedList.ListId"
-                                          OnCreated="ReloadTasks" />
-                    </div>
-                </div>
-
             }
         }
+
+        <!-- ✅ ADD TASK LUÔN HIỂN THỊ -->
+        <div class="task-grid-row add-task-row">
+            <CreateTaskInline ListId="_selectedList.ListId"
+                              OnCreated="ReloadTasks" />
+        </div>
+
+    </div>
+}
+
     </div>
 </div>
 
@@ -215,22 +142,13 @@
 
     private CreateTodoListForm _createListForm = new();
 
+    private readonly Guid _ownerUserId =
+        Guid.Parse("7D97D295-C6F0-F011-9685-782B464EB9F6");
+
     // ================= TASK STATE =================
 
     private IReadOnlyList<TodoTaskListItemDto> _tasks = new List<TodoTaskListItemDto>();
     private bool _isLoadingTasks;
-
-    private string _newTaskTitle = string.Empty;
-    private bool _isCreatingTask;
-
-    private Guid? _changingStatusTaskId;
-
-    // Rename
-    private Guid? _editingTaskId;
-    private string _editingTaskTitle = string.Empty;
-
-    private readonly Guid _ownerUserId =
-        Guid.Parse("7D97D295-C6F0-F011-9685-782B464EB9F6");
 
     // ================= LIFECYCLE =================
 
@@ -277,18 +195,6 @@
     }
 
     // ================= TASK =================
-    private string FormatDue(DateTimeOffset due)
-    {
-        var local = due.ToLocalTime().Date;
-        var today = DateTime.Today;
-
-        if (local == today)
-            return "Today";
-        if (local == today.AddDays(1))
-            return "Tomorrow";
-
-        return local.ToString("dd MMM");
-    }
 
     private async Task LoadTasksAsync(Guid listId)
     {
@@ -297,143 +203,11 @@
         _isLoadingTasks = false;
     }
 
-    private async Task CreateTaskAsync()
-    {
-        await TaskApi.CreateAsync(
-        _selectedList!.ListId,
-        new CreateTodoTaskRequest(
-            _selectedList.ListId,
-            _newTaskTitle.Trim(),
-            null,   // Description
-            0,      // Priority
-            null    // DueAt
-        )
-    );
-
-        _newTaskTitle = string.Empty;
-        await LoadTasksAsync(_selectedList.ListId);
-    }
-
-    private async Task OnStatusChangedAsync(
-        TodoTaskListItemDto task,
-        string newStatus)
-    {
-        if (newStatus == task.Status) return;
-
-        _changingStatusTaskId = task.TaskId;
-
-        await TaskApi.ChangeStatusAsync(
-            task.TaskId,
-            new ChangeTodoTaskStatusRequest(newStatus));
-
-        await LoadTasksAsync(_selectedList!.ListId);
-        _changingStatusTaskId = null;
-    }
-
-    // ================= RENAME =================
-
-    private void StartRename(TodoTaskListItemDto task)
-    {
-        _editingTaskId = task.TaskId;
-        _editingTaskTitle = task.Title;
-    }
-
-    private void CancelRename()
-    {
-        _editingTaskId = null;
-        _editingTaskTitle = string.Empty;
-    }
-
-    private async Task OnRenameKeyDownAsync(
-        KeyboardEventArgs e,
-        TodoTaskListItemDto task)
-    {
-        if (e.Key == "Enter")
-        {
-            await TaskApi.RenameAsync(
-                task.TaskId,
-                new RenameTodoTaskRequest(_editingTaskTitle.Trim()));
-
-            CancelRename();
-            await LoadTasksAsync(_selectedList!.ListId);
-        }
-
-        if (e.Key == "Escape")
-        {
-            CancelRename();
-        }
-    }
-
-    // ================= UI =================
-
-    private static readonly Dictionary<string, string> _statusCss =
-        new()
-        {
-            ["Todo"] = "badge bg-secondary",
-            ["InProgress"] = "badge bg-primary",
-            ["Done"] = "badge bg-success",
-            ["Blocked"] = "badge bg-danger",
-            ["Cancelled"] = "badge bg-light text-muted"
-        };
-
-    private string GetStatusCss(string status)
-        => _statusCss.TryGetValue(status, out var css)
-            ? css
-            : "badge bg-secondary";
-
-    private string GetStatusText(string status) => status switch
-    {
-        "Todo" => "Todo",
-        "InProgress" => "In progress",
-        "Done" => "Done",
-        "Blocked" => "Blocked",
-        "Cancelled" => "Cancelled",
-        _ => status
-    };
-
-    private static string GetStatusClass(string status) => status switch
-    {
-        "Todo" => "status-todo",
-        "InProgress" => "status-inprogress",
-        "Done" => "status-done",
-        "Blocked" => "status-blocked",
-        "Cancelled" => "status-cancelled",
-        _ => "status-default"
-    };
-
-    private static string GetPriorityText(int priority)
-    {
-        return priority switch
-        {
-            1 => "High",
-            2 => "Medium",
-            3 => "Low",
-            4 => "Optional",
-            _ => $"P{priority}"
-        };
-    }
-
-    private Guid? _openStatusTaskId;
-
-    private void ToggleStatusMenu(Guid taskId)
-    {
-        _openStatusTaskId =
-            _openStatusTaskId == taskId ? null : taskId;
-    }
-
-    private async Task ChangeStatusAsync(
-        TodoTaskListItemDto task,
-        string newStatus)
-    {
-        await OnStatusChangedAsync(task, newStatus);
-        _openStatusTaskId = null;
-    }
-    private static bool IsFinalStatus(string status)
-    {
-        return status is "Done" or "Cancelled";
-    }
     private async Task ReloadTasks()
     {
-        await LoadTasksAsync(_selectedList!.ListId);
+        if (_selectedList != null)
+        {
+            await LoadTasksAsync(_selectedList.ListId);
+        }
     }
 }

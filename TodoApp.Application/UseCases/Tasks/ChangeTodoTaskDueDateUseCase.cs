@@ -7,21 +7,24 @@ using TodoApp.Application.Interfaces.Repositories;
 
 namespace TodoApp.Application.UseCases.Tasks
 {
-    public class DeleteTodoTaskUseCase
+    public class ChangeTodoTaskDueDateUseCase
     {
         private readonly ITodoTaskRepository _repo;
 
-        public DeleteTodoTaskUseCase(ITodoTaskRepository repo)
+        public ChangeTodoTaskDueDateUseCase(ITodoTaskRepository repo)
         {
             _repo = repo;
         }
 
-        public async Task ExecuteAsync(Guid taskId, CancellationToken ct = default)
+        public async Task ExecuteAsync(
+            Guid taskId,
+            DateTimeOffset? dueAt,
+            CancellationToken ct = default)
         {
             var task = await _repo.GetByIdAsync(taskId, ct)
                 ?? throw new KeyNotFoundException("TodoTask not found");
 
-            task.SoftDelete();
+            task.ChangeDueDate(dueAt);
 
             await _repo.UpdateAsync(task, ct);
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TodoApp.Contracts.TodoTasks.Enums;
 
 namespace TodoApp.Blazor.Forms
 {
@@ -11,7 +12,8 @@ namespace TodoApp.Blazor.Forms
 
         public DateTime? DueAt { get; set; }
 
-        public byte Priority { get; set; }
+        public TodoTaskPriority Priority { get; set; }
+            = TodoTaskPriority.None;
     }
 
 }

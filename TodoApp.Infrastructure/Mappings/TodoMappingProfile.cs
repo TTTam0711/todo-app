@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Application.Mappings;
+using TodoApp.Contracts.TodoTasks;
 using TodoApp.Domain.Entities;
 using TodoApp.Domain.Factories;
 using TodoApp.Infrastructure.Persistence.Models;
@@ -42,11 +44,11 @@ namespace TodoApp.Infrastructure.Mappings
                         src.TaskId,
                         src.ListId,
                         src.Title,
-                        MapStatusToEnum(src.Status),
+                        TodoTaskDbStatusMapper.ToDomain(src.Status),
                         src.IsDeleted,
                         src.DeletedAt,
                         src.OrderIndex,
-                        src.Priority,
+                        (Domain.Entities.Enums.TodoTaskPriority)src.Priority,
                         src.Description,
                         src.CreatedByUserId,
                         src.UpdatedByUserId,
@@ -60,21 +62,17 @@ namespace TodoApp.Infrastructure.Mappings
 
 
             CreateMap<TodoTaskEntity, TodoTask>()
-                .ForMember(d => d.Status, opt => opt.MapFrom(s => MapEnumToStatus(s.Status)))
-                .ForMember(d => d.Attachments, opt => opt.Ignore())
-                .ForMember(d => d.Comments, opt => opt.Ignore())
-                .ForMember(d => d.Reminders, opt => opt.Ignore())
-                .ForMember(d => d.Subtasks, opt => opt.Ignore())
-                .ForMember(d => d.Tags, opt => opt.Ignore())
-                .ForMember(d => d.List, opt => opt.Ignore())
-                .ForMember(d => d.CreatedByUser, opt => opt.Ignore())
-                .ForMember(d => d.UpdatedByUser, opt => opt.Ignore())
-                .ForMember(d => d.DueAt, opt => opt.MapFrom(s => s.DueAt))
-                .ForMember(d => d.CompletedAt, opt => opt.MapFrom(s => s.CompletedAt))
-                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
-                .ForMember(d => d.Priority, opt => opt.MapFrom(s => s.Priority));
-
-
+                 .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status))   // ✅ DOMAIN enum
+                 .ForMember(d => d.Priority, opt => opt.MapFrom(s => s.Priority))
+                 .ForMember(d => d.Attachments, opt => opt.Ignore())
+                 .ForMember(d => d.Comments, opt => opt.Ignore())
+                 .ForMember(d => d.Reminders, opt => opt.Ignore())
+                 .ForMember(d => d.Subtasks, opt => opt.Ignore())
+                 .ForMember(d => d.Tags, opt => opt.Ignore())
+                 .ForMember(d => d.List, opt => opt.Ignore())
+                 .ForMember(d => d.CreatedByUser, opt => opt.Ignore())
+                 .ForMember(d => d.UpdatedByUser, opt => opt.Ignore());
+            
 
             // ✅ Subtask (ignore navigation Task)
             CreateMap<Subtask, SubtaskEntity>()
@@ -93,27 +91,6 @@ namespace TodoApp.Infrastructure.Mappings
                 .ForMember(d => d.Tasks, opt => opt.Ignore());
         }
 
-        private static TodoTaskStatus MapStatusToEnum(string status)
-            => status.Trim().ToLowerInvariant() switch
-            {
-                "todo" => TodoTaskStatus.Todo,
-                "inprogress" => TodoTaskStatus.InProgress,
-                "in_progress" => TodoTaskStatus.InProgress,
-                "done" => TodoTaskStatus.Done,
-                "blocked" => TodoTaskStatus.Blocked,
-                "cancelled" => TodoTaskStatus.Cancelled,
-                _ => TodoTaskStatus.Todo
-            };
-
-        private static string MapEnumToStatus(TodoTaskStatus status)
-            => status switch
-            {
-                TodoTaskStatus.Todo => "Todo",
-                TodoTaskStatus.InProgress => "InProgress",
-                TodoTaskStatus.Done => "Done",
-                TodoTaskStatus.Blocked => "Blocked",
-                TodoTaskStatus.Cancelled => "Cancelled",
-                _ => "Todo"
-            };
+        
     }
 }

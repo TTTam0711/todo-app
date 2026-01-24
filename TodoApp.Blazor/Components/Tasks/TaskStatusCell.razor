@@ -1,0 +1,85 @@
+﻿@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
+@using Microsoft.AspNetCore.Components.Web
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<div class="status-wrapper" @onclick:stopPropagation="true">
+
+    <button class="status-pill
+                   @GetStatusClass(Task.Status)
+                   @(IsFinalStatus(Task.Status) ? "status-disabled" : "")"
+            disabled="@IsFinalStatus(Task.Status)"
+            @onclick="Toggle">
+        @GetStatusText(Task.Status)
+    </button>
+
+    @if (_open && !IsFinalStatus(Task.Status))
+    {
+        <div class="status-menu">
+            @foreach (var s in Task.AllowedStatusTransitions)
+            {
+                <div class="status-option @GetStatusClass(s)"
+                     @onclick="() => ChangeStatusAsync(s)">
+                    @GetStatusText(s)
+                </div>
+            }
+        </div>
+    }
+
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public TodoTaskListItemDto Task { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnChanged { get; set; }
+
+    private bool _open;
+
+    private void Toggle()
+    {
+        if (IsFinalStatus(Task.Status))
+            return;
+
+        _open = !_open;
+    }
+
+    private async Task ChangeStatusAsync(TodoTaskStatus newStatus)
+    {
+        if (newStatus == Task.Status)
+            return;
+
+        await TaskApi.ChangeStatusAsync(
+            Task.TaskId,
+            new ChangeTodoTaskStatusRequest(newStatus));
+
+        _open = false;
+        await OnChanged.InvokeAsync();
+    }
+
+    private static bool IsFinalStatus(TodoTaskStatus status)
+        => status is TodoTaskStatus.Done or TodoTaskStatus.Cancelled;
+
+    private static string GetStatusText(TodoTaskStatus status) => status switch
+    {
+        TodoTaskStatus.Todo => "Todo",
+        TodoTaskStatus.InProgress => "In progress",
+        TodoTaskStatus.Done => "Done",
+        TodoTaskStatus.Blocked => "Blocked",
+        TodoTaskStatus.Cancelled => "Cancelled",
+        _ => status.ToString()
+    };
+
+    private static string GetStatusClass(TodoTaskStatus status) => status switch
+    {
+        TodoTaskStatus.Todo => "status-todo",
+        TodoTaskStatus.InProgress => "status-inprogress",
+        TodoTaskStatus.Done => "status-done",
+        TodoTaskStatus.Blocked => "status-blocked",
+        TodoTaskStatus.Cancelled => "status-cancelled",
+        _ => "status-default"
+    };
+}

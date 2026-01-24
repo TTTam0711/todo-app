@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.Interfaces.Repositories;
+using TodoApp.Application.Mappings;
 using TodoApp.Contracts.TodoTasks;
 using TodoApp.Domain.Entities;
+using DomainStatus = TodoApp.Domain.Entities.Enums.TodoTaskStatus;
+
 
 namespace TodoApp.Application.UseCases.Tasks
 {
@@ -24,22 +27,27 @@ namespace TodoApp.Application.UseCases.Tasks
         {
             var tasks = await _repo.GetByListIdAsync(listId, ct);
 
-            return tasks.Select(t => new TodoTaskListItemDto(
-                t.TaskId,
-                t.ListId,
+            return tasks.Select(t =>
+            {
+                var allowedContractStatuses =
+                    t.GetAllowedStatusTransitions()
+                     .Select(TodoTaskStatusContractMapper.ToContract)
+                     .ToList();
 
-                t.Title,
-                t.Status.ToString(),
-                t.Description,
-                t.Priority,
-                t.OrderIndex,
-
-                t.DueAt,
-                t.CompletedAt,
-
-                IsOverdue(t),
-                GetAllowedStatusTransitions(t.Status)
-            )).ToList();
+                return new TodoTaskListItemDto(
+                    t.TaskId,
+                    t.ListId,
+                    t.Title,
+                    TodoTaskStatusContractMapper.ToContract(t.Status), // ✅ enum
+                    t.Description,
+                    TodoTaskPriorityMapper.ToContract(t.Priority),
+                    t.OrderIndex,
+                    t.DueAt,
+                    t.CompletedAt,
+                    IsOverdue(t),
+                    allowedContractStatuses
+                );
+            }).ToList();
         }
 
         // ===============================
@@ -51,46 +59,14 @@ namespace TodoApp.Application.UseCases.Tasks
             if (task.DueAt == null)
                 return false;
 
-            if (task.Status is TodoTaskStatus.Done
-                or TodoTaskStatus.Cancelled)
+            if (task.Status is DomainStatus.Done
+                or DomainStatus.Cancelled)
                 return false;
 
             return task.DueAt < DateTimeOffset.UtcNow;
         }
 
-        // ===============================
-        // Status transition projection
-        // ===============================
-
-        private static IReadOnlyList<string> GetAllowedStatusTransitions(
-            TodoTaskStatus currentStatus)
-        {
-            return currentStatus switch
-            {
-                TodoTaskStatus.Todo => new[]
-                {
-                nameof(TodoTaskStatus.InProgress),
-                nameof(TodoTaskStatus.Cancelled)
-            },
-
-                TodoTaskStatus.InProgress => new[]
-                {
-                nameof(TodoTaskStatus.Done),
-                nameof(TodoTaskStatus.Blocked),
-                nameof(TodoTaskStatus.Cancelled)
-            },
-
-                TodoTaskStatus.Blocked => new[]
-                {
-                nameof(TodoTaskStatus.InProgress),
-                nameof(TodoTaskStatus.Cancelled)
-            },
-
-                TodoTaskStatus.Done => Array.Empty<string>(),
-                TodoTaskStatus.Cancelled => Array.Empty<string>(),
-
-                _ => Array.Empty<string>()
-            };
-        }
+        
     }
 }
+

@@ -1,0 +1,127 @@
+﻿@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
+@using Microsoft.AspNetCore.Components.Web
+@using TodoApp.Blazor.Components.Tasks
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+
+
+    <!-- TASK TITLE -->
+    <div class="task-title">
+        @if (_editingTaskId == Task.TaskId)
+        {
+            <input class="form-control form-control-sm"
+                   @bind="_editingTaskTitle"
+                   @bind:event="oninput"
+                   @onkeydown="OnRenameKeyDownAsync"
+                   @onblur="CancelRename"
+                   autofocus />
+        }
+        else
+        {
+            <span @ondblclick="StartRename">
+                @Task.Title
+            </span>
+        }
+    </div>
+
+    <!-- STATUS -->
+    <TaskStatusCell Task="Task"
+                OnChanged="OnChanged" />
+
+    <!-- DUE DATE -->
+    <TaskDueCell Task="Task"
+             OnSaveRequested="OnDueDateSaveRequested" />
+
+    <!-- OVERDUE -->
+    <div>
+        @if (Task.IsOverdue)
+        {
+            <span class="overdue-badge" title="Overdue">
+                ⏰ Overdue
+            </span>
+        }
+        else
+        {
+            <span class="text-muted">—</span>
+        }
+    </div>
+
+    <!-- PRIORITY + ACTIONS -->
+    <div class="col-priority">
+        <TaskPriorityCell Task="Task" OnChanged="OnChanged" />
+    </div>
+
+<div class="col-actions">
+    <TaskActionsCell TaskId="Task.TaskId"
+                     OnDeleted="OnDeleted" />
+</div>
+@code {
+
+    [Parameter, EditorRequired]
+    public TodoTaskListItemDto Task { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<Guid> OnDeleted { get; set; }
+
+    // ===== STATE =====
+    private Guid? _editingTaskId;
+    private string _editingTaskTitle = string.Empty;
+
+
+    // ===== RENAME =====
+    private void StartRename()
+    {
+        _editingTaskId = Task.TaskId;
+        _editingTaskTitle = Task.Title;
+    }
+
+    private void CancelRename()
+    {
+        _editingTaskId = null;
+        _editingTaskTitle = string.Empty;
+    }
+
+    private async Task OnRenameKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await TaskApi.RenameAsync(
+                Task.TaskId,
+                new RenameTodoTaskRequest(_editingTaskTitle.Trim()));
+
+            CancelRename();
+            await OnChanged.InvokeAsync();
+        }
+
+        if (e.Key == "Escape")
+        {
+            CancelRename();
+        }
+    }
+
+    // ===== STATUS =====
+    
+
+    // ===== DUE DATE =====
+    
+
+    // ===== PRIORITY =====
+    
+
+    // ===== ACTIONS =====
+    
+
+    private async Task OnDueDateSaveRequested(DateTimeOffset? dueAt)
+    {
+        await TaskApi.ChangeDueDateAsync(
+            Task.TaskId,
+            new ChangeTodoTaskDueDateRequest(dueAt));
+
+        await OnChanged.InvokeAsync();
+    }
+}

@@ -1,6 +1,9 @@
 ﻿@namespace TodoApp.Blazor.Pages.Components
+
 @using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
 @using TodoApp.Blazor.Forms
+
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 
 @if (!_isExpanded)
@@ -41,16 +44,19 @@ else
             <!-- OVERDUE (placeholder column) -->
             <div></div>
 
-            <!-- PRIORITY -->
-            <InputSelect TValue="byte"
+            <!-- PRIORITY (ENUM-BASED) -->
+            <InputSelect TValue="TodoTaskPriority"
                          class="form-select form-select-sm"
                          @bind-Value="_form.Priority"
                          disabled="@_isSubmitting">
-                <option value="0">No priority</option>
-                <option value="1">High</option>
-                <option value="2">Medium</option>
-                <option value="3">Low</option>
-                <option value="4">Very low</option>
+                @foreach (var p in Enum.GetValues<TodoTaskPriority>())
+                {
+                    <option value="@p">
+                        @(p == TodoTaskPriority.None
+                                        ? "No priority"
+                                        : p.ToString())
+            </option>
+                        }
             </InputSelect>
 
             <!-- ACTIONS -->
@@ -111,7 +117,7 @@ else
 
         try
         {
-            // 1️⃣ Convert DateTime? -> DateTimeOffset?
+            // 1️⃣ Convert DateTime? -> DateTimeOffset? (UTC)
             DateTimeOffset? dueAtUtc = null;
 
             if (_form.DueAt.HasValue)
@@ -124,7 +130,7 @@ else
                 );
             }
 
-            // 2️⃣ Tạo request
+            // 2️⃣ Create request (ENUM priority)
             var request = new CreateTodoTaskRequest(
                 ListId,
                 _form.Title.Trim(),
@@ -133,7 +139,7 @@ else
                 dueAtUtc
             );
 
-            // 3️⃣ Gọi API
+            // 3️⃣ Call API
             await TaskApi.CreateAsync(ListId, request);
 
             ResetForm();
@@ -147,12 +153,11 @@ else
         }
     }
 
-
     private void ResetForm()
     {
         _form.Title = string.Empty;
         _form.Description = null;
         _form.DueAt = null;
-        _form.Priority = 0;
+        _form.Priority = TodoTaskPriority.None;
     }
 }
