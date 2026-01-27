@@ -39,11 +39,16 @@
     background: #ffffff;
     border-radius: 6px;
     transition: background 0.15s ease;
+    min-height: 44px;
+    overflow: visible;
 }
 
     .task-grid-row:hover {
         background: #f9fafb;
     }
+.add-task-row > div:first-child {
+    grid-column: 1 / -1; /* ✅ SPAN TOÀN BỘ GRID */
+}
 
 /* ================= OVERDUE (READ-ONLY INDICATOR) ================= */
 /* Overdue là derived state → để ở page */
@@ -71,4 +76,19 @@
     }
 .col-actions-header {
     width: 48px;
+}
+.add-task-inline-btn {
+    background: transparent;
+    border: none;
+    padding: 4px 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+    .add-task-inline-btn:hover {
+        color: #2563eb;
+    }
+.add-task-container {
+    margin-top: 8px;
+    padding-left: 12px; /* canh với cột Task */
 }

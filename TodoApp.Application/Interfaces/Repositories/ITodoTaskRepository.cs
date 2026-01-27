@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Application.Queries.Tasks;
 using TodoApp.Domain.Entities;
 
 namespace TodoApp.Application.Interfaces.Repositories
@@ -28,6 +29,9 @@ namespace TodoApp.Application.Interfaces.Repositories
         Task UpdateAsync(
             TodoTaskEntity entity,
             CancellationToken ct = default);
+        Task<IReadOnlyList<TodoTaskEntity>> QueryAsync(
+            QueryTodoTasksInternal query,
+            CancellationToken ct);
     }
 
 }

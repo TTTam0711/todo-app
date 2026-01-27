@@ -38,7 +38,7 @@ namespace TodoApp.Application.UseCases.Tasks
                     t.TaskId,
                     t.ListId,
                     t.Title,
-                    TodoTaskStatusContractMapper.ToContract(t.Status), // ✅ enum
+                    TodoTaskStatusContractMapper.ToContract(t.Status), 
                     t.Description,
                     TodoTaskPriorityMapper.ToContract(t.Priority),
                     t.OrderIndex,

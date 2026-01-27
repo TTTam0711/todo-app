@@ -3,7 +3,7 @@
 
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 
-<div class="priority-cell" @onclick:stopPropagation="true">
+<div class="priority-wrapper" @onclick:stopPropagation="true">
 
     <button class="priority-badge priority-@((int)Task.Priority)"
             @onclick="TogglePriority">

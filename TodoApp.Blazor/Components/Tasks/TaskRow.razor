@@ -4,7 +4,7 @@
 @using TodoApp.Blazor.Components.Tasks
 
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
-
+@inject NavigationManager Nav
 
 
     <!-- TASK TITLE -->
@@ -21,7 +21,10 @@
         else
         {
             <span @ondblclick="StartRename">
-                @Task.Title
+                <span class="task-title-link"
+                      @onclick="() => OnOpenDetail.InvokeAsync(Task.TaskId)">
+                    @Task.Title
+                </span>
             </span>
         }
     </div>
@@ -55,7 +58,7 @@
 
 <div class="col-actions">
     <TaskActionsCell TaskId="Task.TaskId"
-                     OnDeleted="OnDeleted" />
+                     OnDeleted="HandleDeletedAsync" />
 </div>
 @code {
 
@@ -68,6 +71,8 @@
     [Parameter]
     public EventCallback<Guid> OnDeleted { get; set; }
 
+    [Parameter]
+    public EventCallback<Guid> OnOpenDetail { get; set; }
     // ===== STATE =====
     private Guid? _editingTaskId;
     private string _editingTaskTitle = string.Empty;
@@ -104,18 +109,6 @@
         }
     }
 
-    // ===== STATUS =====
-    
-
-    // ===== DUE DATE =====
-    
-
-    // ===== PRIORITY =====
-    
-
-    // ===== ACTIONS =====
-    
-
     private async Task OnDueDateSaveRequested(DateTimeOffset? dueAt)
     {
         await TaskApi.ChangeDueDateAsync(
@@ -123,5 +116,15 @@
             new ChangeTodoTaskDueDateRequest(dueAt));
 
         await OnChanged.InvokeAsync();
+    }
+
+    private async Task HandleDeletedAsync(Guid taskId)
+    {
+     
+        await OnChanged.InvokeAsync();
+    }
+    private void OpenDetail()
+    {
+        Nav.NavigateTo($"/tasks/{Task.TaskId}");
     }
 }

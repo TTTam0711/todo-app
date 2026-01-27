@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
+using TodoApp.Blazor.ViewModels;
 using TodoApp.Contracts.TodoTasks;
+using TodoApp.Contracts.TodoTasks.Enums;
 
 namespace TodoApp.Blazor.Services
 {
@@ -82,6 +84,50 @@ namespace TodoApp.Blazor.Services
 
             response.EnsureSuccessStatusCode();
         }
+        public async Task<TodoTaskDetailDto> GetDetailAsync(Guid taskId)
+        {
+            return await _http.GetFromJsonAsync<TodoTaskDetailDto>(
+                $"api/todotasks/{taskId}")
+                ?? throw new InvalidOperationException("Task not found");
+        }
+        public async Task ChangeDescriptionAsync(
+            Guid taskId,
+            ChangeTodoTaskDescriptionRequest request,
+            CancellationToken ct = default)
+        {
+            var response = await _http.PatchAsJsonAsync(
+                $"api/todotasks/{taskId}/description",
+                request,
+                ct);
 
+            response.EnsureSuccessStatusCode();
+        }
+        public async Task<IReadOnlyList<TodoTaskListItemDto>> QueryAsync(
+            Guid listId,
+            TaskFilterState filter,
+            CancellationToken ct)
+        {
+            var query = new Dictionary<string, string>();
+
+            if (filter.Status.HasValue)
+                query["status"] = ((int)filter.Status.Value).ToString();
+
+            if (filter.Priority.HasValue)
+                query["priority"] = ((int)filter.Priority.Value).ToString();
+
+            if (filter.SortByDue)
+            {
+                query["sortBy"] = "DueAt";
+                query["direction"] =
+                    filter.DueDirection == ViewModels.SortDirection.Desc ? "desc" : "asc";
+            }
+
+            var url =
+                $"api/todolists/{listId}/tasks/query?" +
+                string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
+
+            return await _http.GetFromJsonAsync<List<TodoTaskListItemDto>>(url, ct)
+                ?? new List<TodoTaskListItemDto>();
+        }
     }
 }

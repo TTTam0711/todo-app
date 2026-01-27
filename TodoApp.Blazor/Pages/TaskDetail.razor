@@ -1,0 +1,11 @@
+﻿@page "/tasks/{TaskId:guid}"
+
+@using TodoApp.Blazor.Components.Tasks
+
+<TaskDetailPanel TaskId="TaskId"
+                 FullPage="true" />
+
+@code {
+    [Parameter]
+    public Guid TaskId { get; set; }
+}

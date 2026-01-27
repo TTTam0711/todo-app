@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.Interfaces.Repositories;
+using TodoApp.Application.Queries.Tasks;
 using TodoApp.Domain.Entities;
+using TodoApp.Infrastructure.Mappings;
 using TodoApp.Infrastructure.Persistence.Context;
 using TodoApp.Infrastructure.Persistence.Models;
 
@@ -85,6 +87,103 @@ namespace TodoApp.Infrastructure.Repositories
             _mapper.Map(entity, model);
 
             await _db.SaveChangesAsync(ct);
+        }
+        public async Task<IReadOnlyList<TodoTaskEntity>> QueryAsync(
+            QueryTodoTasksInternal q,
+            CancellationToken ct)
+        {
+            IQueryable<TodoTask> query = _db.TodoTasks
+                .AsNoTracking()
+                .Where(t => t.ListId == q.ListId);
+
+            // =========================
+            // Soft delete filter
+            // =========================
+            if (!q.IncludeDeleted)
+            {
+                query = query.Where(t => !t.IsDeleted);
+            }
+
+            // =========================
+            // Status filter
+            // =========================
+            if (q.Status.HasValue)
+            {
+                var dbStatus = TodoTaskDbStatusMapper.ToDb(q.Status.Value);
+                query = query.Where(t => t.Status == dbStatus);
+            }
+
+            // =========================
+            // Priority filter
+            // =========================
+            if (q.Priority.HasValue)
+            {
+                var dbPriority = TodoTaskDbPriorityMapper.ToDb(q.Priority.Value);
+                query = query.Where(t => t.Priority == dbPriority);
+            }
+
+            // =========================
+            // Completed filter
+            // =========================
+            if (!q.IncludeCompleted)
+            {
+                var doneStatus = TodoTaskDbStatusMapper.ToDb(
+                    Domain.Entities.Enums.TodoTaskStatus.Done);
+
+                query = query.Where(t => t.Status != doneStatus);
+            }
+
+            // =========================
+            // Due date filter
+            // =========================
+            if (q.DueFrom.HasValue)
+            {
+                query = query.Where(t => t.DueAt >= q.DueFrom.Value);
+            }
+
+            if (q.DueTo.HasValue)
+            {
+                query = query.Where(t => t.DueAt <= q.DueTo.Value);
+            }
+
+            // =========================
+            // Sorting
+            // =========================
+            query = ApplySorting(query, q);
+
+            // =========================
+            // Execute query
+            // =========================
+            var rows = await query.ToListAsync(ct);
+
+            // =========================
+            // Map EF → Domain
+            // =========================
+            return rows.Select(_mapper.Map<TodoTaskEntity>).ToList();
+        }
+        private static IQueryable<TodoTask> ApplySorting(
+            IQueryable<TodoTask> query,
+            QueryTodoTasksInternal q)
+        {
+            return (q.SortBy, q.Direction) switch
+            {
+                (TodoTaskSortBy.DueAt, SortDirection.Asc)
+                    => query.OrderBy(t => t.DueAt),
+
+                (TodoTaskSortBy.DueAt, SortDirection.Desc)
+                    => query.OrderByDescending(t => t.DueAt),
+
+                (TodoTaskSortBy.Priority, SortDirection.Asc)
+                    => query.OrderBy(t => t.Priority),
+
+                (TodoTaskSortBy.Priority, SortDirection.Desc)
+                    => query.OrderByDescending(t => t.Priority),
+
+                (TodoTaskSortBy.CreatedAt, SortDirection.Desc)
+                    => query.OrderByDescending(t => t.CreatedAt),
+
+                _ => query.OrderBy(t => t.OrderIndex)
+            };
         }
     }
 }

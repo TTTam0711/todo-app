@@ -1,55 +1,50 @@
-﻿.create-task-inline {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.task-options {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-    .task-options select,
-    .task-options input {
-        max-width: 160px;
-    }
-.create-task-inline {
-    margin-bottom: 12px;
-}
-
-.create-task-placeholder {
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #6b7280;
-    cursor: text;
-}
-
-    .create-task-placeholder:hover {
-        background: #f3f4f6;
-    }
-
-.create-task-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-    .create-task-row input,
-    .create-task-row select {
-        height: 32px;
-    }
+﻿/* ================= GRID (MATCH TASK TABLE) ================= */
 
 .create-task-inline-grid {
     display: grid;
-    grid-template-columns: minmax(240px, 1fr) 140px 110px 90px 90px auto auto;
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) /* Task */
+    120px /* Status */
+    110px /* Due */
+    80px /* Overdue */
+    80px /* Priority */
+    56px; /* Actions */
     align-items: center;
+    column-gap: 12px;
 }
-.add-task-container {
+
+    /* Prevent overflow */
+    .create-task-inline-grid input,
+    .create-task-inline-grid select {
+        max-width: 100%;
+        height: 32px;
+    }
+
+/* ================= ADD TASK ROW – NOT A TASK ================= */
+
+/* Remove card feeling completely */
+.add-task-inline-row {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+    /* No hover highlight */
+    .add-task-inline-row:hover {
+        background: transparent !important;
+    }
+
+/* Neutral cursor on row */
+.add-task-inline-row {
+    cursor: default;
+}
+
+/* ================= ADD TASK BUTTON ================= */
+
+.add-task-button-cell {
     display: flex;
-    align-items: center; /* hoặc flex-end nếu bạn muốn sát phải */
-    background: transparent; /* QUAN TRỌNG */
+    align-items: center;
+    justify-self: start; /* do NOT stretch */
 }
 
 .add-task-inline-btn {
@@ -57,21 +52,21 @@
     align-items: center;
     gap: 6px;
     background: transparent;
-    border: 1px solid #e5e7eb;
+    border: 1px dashed #d1d5db;
+    border-radius: 6px;
+    padding: 4px 8px;
     font-size: 0.8rem;
     font-weight: 500;
     color: #374151;
-    padding: 4px 10px;
-    border-radius: 999px; /* BO TRÒN HOÀN TOÀN */
-
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
+    /* Hover ONLY on button */
     .add-task-inline-btn:hover {
         background: #f9fafb;
-        border-color: #c7d2fe;
-        color: #1d4ed8;
+        border-color: #6366f1;
+        color: #4338ca;
     }
 
     .add-task-inline-btn:active {
@@ -79,7 +74,42 @@
     }
 
     .add-task-inline-btn .add-icon {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1;
         color: #6366f1;
+    }
+
+/* ================= ACTIONS ================= */
+
+.create-task-actions {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+    .icon-btn.primary {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        color: #ffffff;
+    }
+
+    .icon-btn:hover {
+        background: #f3f4f6;
+    }
+
+    .icon-btn.primary:hover {
+        background: #4338ca;
     }

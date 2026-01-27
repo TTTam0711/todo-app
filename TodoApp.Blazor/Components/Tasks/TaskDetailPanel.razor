@@ -1,0 +1,331 @@
+﻿@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
+@using Microsoft.AspNetCore.Components.Web
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<div class="task-detail-overlay panel">
+    <div class="task-detail-backdrop" @onclick="Close"></div>
+
+    <div class="task-detail-container modern">
+
+        <!-- ================= CONTENT ================= -->
+        <div class="task-detail-content modern">
+
+            @if (_isLoading)
+            {
+                <p>Loading task...</p>
+            }
+            else if (_task != null)
+            {
+                <!-- ===== HEADER ROW (TITLE + ACTIONS) ===== -->
+                <div class="task-header-row">
+
+                    <div class="task-title-area">
+                        @if (_isEditingTitle)
+                        {
+                            <input class="title-input"
+                                   @bind="_titleDraft"
+                                   @onkeydown="OnTitleKeyDown"
+                                   @onblur="SaveTitleAsync"
+                                   autofocus />
+                        }
+                        else
+                        {
+                            <h3 @ondblclick="StartEditTitle">
+                                @_task.Title
+                            </h3>
+                        }
+
+                        <div class="task-dates">
+                            Created @FormatDate(_task.CreatedAt)
+                            · Updated @FormatDate(_task.UpdatedAt)
+                        </div>
+                    </div>
+
+                    <div class="task-actions">
+                        <div class="dropdown">
+                            <button class="icon-btn" data-bs-toggle="dropdown">⋯</button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <button class="dropdown-item">
+                                        Mark as not done
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item">
+                                        Duplicate
+                                    </button>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <button class="dropdown-item text-danger">
+                                        Delete
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== META ROW (INLINE) ===== -->
+                <div class="task-meta-row">
+
+                    <!-- Status -->
+                    <select class="pill status"
+                            value="@_selectedStatus"
+                            @onchange="OnStatusChanged">
+                        <option value="@_selectedStatus">@_selectedStatus</option>
+                        @foreach (var s in _task.AllowedStatusTransitions)
+                        {
+                            <option value="@s">@s</option>
+                        }
+                    </select>
+
+                    <!-- Priority -->
+                    <select class="pill priority @_selectedPriority.ToString().ToLower()"
+                            value="@_selectedPriority"
+                            @onchange="OnPriorityChanged">
+                        @foreach (TodoTaskPriority p in Enum.GetValues(typeof(TodoTaskPriority)))
+                        {
+                            <option value="@p">@p</option>
+                        }
+                    </select>
+
+                    <!-- Due date -->
+                    @if (_isEditingDueDate)
+                    {
+                        <input type="date"
+                               class="pill due-input"
+                               value="@FormatDateForInput(_dueDateDraft)"
+                               @onchange="OnDueDateChanged"
+                               @onkeydown="OnDueDateKeyDown"
+                               autofocus />
+                    }
+                    else
+                    {
+                        <span class="pill due"
+                              @onclick="StartEditDueDate">
+                            @(_task.DueAt.HasValue
+                                                ? FormatDate(_task.DueAt.Value)
+                                                : "No due date")
+                </span>
+                                }
+                </div>
+
+                <!-- ===== DESCRIPTION ===== -->
+                <div class="task-section">
+                    <h6>Description</h6>
+
+                    @if (_isEditingDescription)
+                    {
+                        <textarea class="description-editor"
+                                  rows="4"
+                                  @bind="_descriptionDraft"
+                                  @onkeydown="OnDescriptionKeyDown"
+                                  @onblur="SaveDescriptionAsync"
+                                  autofocus />
+                        <div class="text-muted small">
+                            Ctrl + Enter to save · Esc to cancel
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="description-view"
+                             @onclick="StartEditDescription">
+                            @if (string.IsNullOrWhiteSpace(_task.Description))
+                            {
+                                <span class="placeholder">
+                                    What is this task about?
+                                </span>
+                            }
+                            else
+                            {
+                                @_task.Description
+                            }
+                        </div>
+                    }
+            </div>
+
+            <!-- ===== NOTES ===== -->
+            <div class="task-section">
+                <h6>Notes</h6>
+
+                <textarea class="notes-editor"
+                          rows="3"
+                          placeholder="Leave a note for your future self 🐾">
+                    </textarea>
+
+                <button class="btn btn-primary btn-sm mt-2">
+                    Add
+                </button>
+            </div>
+
+            <!-- ===== COMPLETED ===== -->
+            <div class="task-section completed">
+                <strong>Completed</strong><br />
+                @(_task.CompletedAt.HasValue
+                                ? FormatDate(_task.CompletedAt.Value)
+                                : "—")
+            </div>
+                        }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnTaskChanged { get; set; }
+
+    private TodoTaskDetailDto? _task;
+    private bool _isLoading;
+
+    private bool _isEditingTitle;
+    private string _titleDraft = "";
+
+    private TodoTaskStatus _selectedStatus;
+    private TodoTaskPriority _selectedPriority;
+
+    private bool _isEditingDueDate;
+    private DateTimeOffset? _dueDateDraft;
+
+    private bool _isEditingDescription;
+    private string _descriptionDraft = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadTaskAsync();
+
+        if (_task != null)
+        {
+            _titleDraft = _task.Title;
+            _selectedStatus = _task.Status;
+            _selectedPriority = _task.Priority;
+            _dueDateDraft = _task.DueAt;
+            _descriptionDraft = _task.Description ?? "";
+        }
+    }
+
+    private async Task LoadTaskAsync()
+    {
+        _isLoading = true;
+        _task = await TaskApi.GetDetailAsync(TaskId);
+        _isLoading = false;
+    }
+
+    /* ===== TITLE ===== */
+    private void StartEditTitle() => _isEditingTitle = true;
+
+    private async Task SaveTitleAsync()
+    {
+        if (_task == null || _titleDraft.Trim() == _task.Title)
+        {
+            _isEditingTitle = false;
+            return;
+        }
+
+        await TaskApi.RenameAsync(
+            TaskId,
+            new RenameTodoTaskRequest(_titleDraft.Trim()));
+
+        await LoadTaskAsync();
+        await OnTaskChanged.InvokeAsync();
+        _isEditingTitle = false;
+    }
+
+    private async Task OnTitleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await SaveTitleAsync();
+        if (e.Key == "Escape") _isEditingTitle = false;
+    }
+
+    /* ===== STATUS ===== */
+    private async Task OnStatusChanged(ChangeEventArgs e)
+    {
+        if (!Enum.TryParse<TodoTaskStatus>(e.Value?.ToString(), out var s)) return;
+
+        await TaskApi.ChangeStatusAsync(
+            TaskId,
+            new ChangeTodoTaskStatusRequest(s));
+
+        await LoadTaskAsync();
+        await OnTaskChanged.InvokeAsync();
+    }
+
+    /* ===== PRIORITY ===== */
+    private async Task OnPriorityChanged(ChangeEventArgs e)
+    {
+        if (!Enum.TryParse<TodoTaskPriority>(e.Value?.ToString(), out var p)) return;
+
+        await TaskApi.ChangePriorityAsync(
+            TaskId,
+            new ChangeTodoTaskPriorityRequest(p));
+
+        await LoadTaskAsync();
+        await OnTaskChanged.InvokeAsync();
+    }
+
+    /* ===== DUE DATE ===== */
+    private void StartEditDueDate()
+    {
+        _dueDateDraft = _task?.DueAt;
+        _isEditingDueDate = true;
+    }
+
+    private async Task OnDueDateChanged(ChangeEventArgs e)
+    {
+        DateTimeOffset? date = null;
+        if (DateTime.TryParse(e.Value?.ToString(), out var d))
+            date = new DateTimeOffset(d.Date, TimeSpan.Zero);
+
+        await TaskApi.ChangeDueDateAsync(
+            TaskId,
+            new ChangeTodoTaskDueDateRequest(date));
+
+        await LoadTaskAsync();
+        await OnTaskChanged.InvokeAsync();
+        _isEditingDueDate = false;
+    }
+
+    private void OnDueDateKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") _isEditingDueDate = false;
+    }
+
+    /* ===== DESCRIPTION ===== */
+    private void StartEditDescription() => _isEditingDescription = true;
+
+    private async Task SaveDescriptionAsync()
+    {
+        await TaskApi.ChangeDescriptionAsync(
+            TaskId,
+            new ChangeTodoTaskDescriptionRequest(
+                string.IsNullOrWhiteSpace(_descriptionDraft)
+                    ? null
+                    : _descriptionDraft.Trim()));
+
+        await LoadTaskAsync();
+        await OnTaskChanged.InvokeAsync();
+        _isEditingDescription = false;
+    }
+
+    private async Task OnDescriptionKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") _isEditingDescription = false;
+        if (e.Key == "Enter" && e.CtrlKey) await SaveDescriptionAsync();
+    }
+
+    /* ===== HELPERS ===== */
+    private static string FormatDate(DateTimeOffset d)
+        => d.ToLocalTime().ToString("dd MMM yyyy");
+
+    private static string? FormatDateForInput(DateTimeOffset? d)
+        => d?.ToLocalTime().ToString("yyyy-MM-dd");
+
+    private async Task Close()
+    {
+        if (OnClose.HasDelegate)
+            await OnClose.InvokeAsync();
+    }
+}

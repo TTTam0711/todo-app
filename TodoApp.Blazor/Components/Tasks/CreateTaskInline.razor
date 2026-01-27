@@ -1,4 +1,4 @@
-﻿@namespace TodoApp.Blazor.Pages.Components
+﻿@namespace TodoApp.Blazor.Components.Tasks
 
 @using TodoApp.Contracts.TodoTasks
 @using TodoApp.Contracts.TodoTasks.Enums
@@ -8,43 +8,56 @@
 
 @if (!_isExpanded)
 {
-    <!-- COLLAPSED: Add task button -->
-    <div class="add-task-container">
-        <button class="add-task-inline-btn"
-                @onclick="Expand">
-            <span class="add-icon">＋</span>
-            <span>Add task</span>
-        </button>
+    <!-- COLLAPSED: action only (NOT a task row) -->
+    <div class="create-task-inline-grid add-task-inline-row">
+
+        <!-- Task column -->
+        <div class="add-task-button-cell">
+            <button type="button"
+                    class="add-task-inline-btn"
+                    @onclick="Expand">
+                <span class="add-icon">＋</span>
+                <span>Add task</span>
+            </button>
+        </div>
+
+        <!-- fillers to keep grid structure -->
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+
     </div>
 }
 else
 {
-    <!-- EXPANDED: Create task form -->
+    <!-- EXPANDED: create task row -->
     <EditForm Model="_form" OnValidSubmit="HandleSubmit">
         <DataAnnotationsValidator />
 
-        <div class="create-task-inline-grid">
+        <div class="create-task-inline-grid add-task-inline-row">
 
-            <!-- TITLE -->
+            <!-- Task -->
             <InputText class="form-control form-control-sm"
                        placeholder="Task title…"
                        @bind-Value="_form.Title"
                        disabled="@_isSubmitting"
                        autofocus />
 
-            <!-- STATUS (placeholder column) -->
+            <!-- Status (placeholder) -->
             <div></div>
 
-            <!-- DUE DATE -->
+            <!-- Due -->
             <InputDate TValue="DateTime?"
                        class="form-control form-control-sm"
                        @bind-Value="_form.DueAt"
                        disabled="@_isSubmitting" />
 
-            <!-- OVERDUE (placeholder column) -->
+            <!-- Overdue (placeholder) -->
             <div></div>
 
-            <!-- PRIORITY (ENUM-BASED) -->
+            <!-- Priority -->
             <InputSelect TValue="TodoTaskPriority"
                          class="form-select form-select-sm"
                          @bind-Value="_form.Priority"
@@ -52,26 +65,28 @@ else
                 @foreach (var p in Enum.GetValues<TodoTaskPriority>())
                 {
                     <option value="@p">
-                        @(p == TodoTaskPriority.None
-                                        ? "No priority"
-                                        : p.ToString())
-            </option>
-                        }
+                        @(p == TodoTaskPriority.None ? "No prio" : p.ToString())
+                    </option>
+                }
             </InputSelect>
 
-            <!-- ACTIONS -->
-            <button type="submit"
-                    class="btn btn-primary btn-sm"
-                    disabled="@IsSubmitDisabled">
-                +
-            </button>
+            <!-- Actions -->
+            <div class="create-task-actions">
+                <button type="submit"
+                        class="icon-btn primary"
+                        title="Add task"
+                        disabled="@IsSubmitDisabled">
+                    +
+                </button>
 
-            <button type="button"
-                    class="btn btn-light btn-sm"
-                    disabled="@_isSubmitting"
-                    @onclick="Cancel">
-                Cancel
-            </button>
+                <button type="button"
+                        class="icon-btn"
+                        title="Cancel"
+                        disabled="@_isSubmitting"
+                        @onclick="Cancel">
+                    ✕
+                </button>
+            </div>
 
         </div>
     </EditForm>
@@ -79,15 +94,11 @@ else
 
 @code {
 
-    // ===== PARAMETERS =====
-
     [Parameter, EditorRequired]
     public Guid ListId { get; set; }
 
     [Parameter]
     public EventCallback OnCreated { get; set; }
-
-    // ===== STATE =====
 
     private readonly CreateTodoTaskForm _form = new();
     private bool _isSubmitting;
@@ -95,8 +106,6 @@ else
 
     private bool IsSubmitDisabled =>
         _isSubmitting || string.IsNullOrWhiteSpace(_form.Title);
-
-    // ===== ACTIONS =====
 
     private void Expand()
     {
@@ -117,20 +126,15 @@ else
 
         try
         {
-            // 1️⃣ Convert DateTime? -> DateTimeOffset? (UTC)
             DateTimeOffset? dueAtUtc = null;
 
             if (_form.DueAt.HasValue)
             {
                 dueAtUtc = new DateTimeOffset(
-                    DateTime.SpecifyKind(
-                        _form.DueAt.Value,
-                        DateTimeKind.Utc
-                    )
+                    DateTime.SpecifyKind(_form.DueAt.Value, DateTimeKind.Utc)
                 );
             }
 
-            // 2️⃣ Create request (ENUM priority)
             var request = new CreateTodoTaskRequest(
                 ListId,
                 _form.Title.Trim(),
@@ -139,7 +143,6 @@ else
                 dueAtUtc
             );
 
-            // 3️⃣ Call API
             await TaskApi.CreateAsync(ListId, request);
 
             ResetForm();

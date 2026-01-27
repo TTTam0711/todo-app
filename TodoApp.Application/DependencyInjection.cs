@@ -24,12 +24,16 @@ namespace TodoApp.Application
             // Tasks CRUD
             services.AddScoped<CreateTodoTaskUseCase>();
             services.AddScoped<GetTodoTasksByListUseCase>();
+            services.AddScoped<GetTodoTaskDetailUseCase>();
             services.AddScoped<RenameTodoTaskUseCase>();
             services.AddScoped<ChangeTodoTaskStatusUseCase>();
             services.AddScoped<ChangeTodoTaskDueDateUseCase>();
             services.AddScoped<ChangeTodoTaskPriorityUseCase>();
             services.AddScoped<ReorderTodoTaskUseCase>();
             services.AddScoped<DeleteTodoTaskUseCase>();
+            services.AddScoped<ChangeTodoTaskDescriptionUseCase>();
+            services.AddScoped<QueryTodoTasksUseCase>();
+
             // Tasks/Subtasks/Tags: đăng ký sau
             // services.AddScoped<CreateTodoTaskUseCase>(); ...
 

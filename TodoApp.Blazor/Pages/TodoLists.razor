@@ -6,7 +6,7 @@
 @using TodoApp.Blazor.Components.Tasks
 @using TodoApp.Contracts.TodoLists
 @using TodoApp.Contracts.TodoTasks
-
+@using TodoApp.Blazor.ViewModels
 @inject TodoApp.Blazor.Services.TodoListApiClient ListApi
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 
@@ -79,56 +79,77 @@
     <!-- ================= RIGHT PANEL ================= -->
     <div class="todo-detail-panel">
         @if (_selectedList == null)
-{
-    <p>Select a list</p>
-}
-else if (_isLoadingTasks)
-{
-    <p>Loading tasks...</p>
-}
-else
-{
-    <div class="task-table">
-
-        <!-- HEADER -->
-        <div class="task-grid-header">
-            <div>Task</div>
-            <div>Status</div>
-            <div>Due</div>
-            <div>Overdue</div>
-            <div>Priority</div>
-            <div class="col-actions-header"></div>
-        </div>
-
-        <!-- TASK ROWS -->
-        @if (_tasks.Count == 0)
         {
-            <div class="task-grid-row empty-row">
-                <span class="text-muted">No tasks yet</span>
-            </div>
+            <p>Select a list</p>
         }
         else
         {
-            @foreach (var task in _tasks)
+            <TaskFilterBar Filter="_filter"
+                           FilterChanged="OnFilterChanged" />
+
+            @if (_isLoadingTasks)
             {
-                        <div class="task-grid-row">
-                            <TaskRow Task="task"
-                                     OnChanged="ReloadTasks" />
+                <p>Loading tasks...</p>
+            }
+            else
+            {
+                <div class="task-table">
+
+                    <!-- HEADER -->
+                    <div class="task-grid-header">
+                        <div>Task</div>
+                        <div>Status</div>
+                        <div>
+                            Due
+                            @if (_filter.SortByDue)
+                            {
+                                <span>
+                                    @(_filter.DueDirection == SortDirection.Asc ? "↑" : "↓")
+                                </span>
+                            }
                         </div>
+                        <div>Overdue</div>
+                        <div>Priority</div>
+                        <div class="col-actions-header"></div>
+                    </div>
+
+                    <!-- TASK ROWS -->
+                    @if (_tasks.Count == 0)
+                    {
+                        <div class="task-grid-row empty-row">
+                            <span class="text-muted">No tasks yet</span>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var task in _tasks)
+                        {
+                            <div class="task-grid-row">
+                                <TaskRow Task="task"
+                                         OnChanged="ReloadTasks"
+                                         OnOpenDetail="OpenTaskDetail" />
+                            </div>
+                        }
+                    }
+
+                    <!-- ADD TASK -->
+                    <div class="add-task-container">
+                        <CreateTaskInline ListId="_selectedList.ListId"
+                                          OnCreated="ReloadTasks" />
+                    </div>
+
+                </div>
             }
         }
-
-        <!-- ✅ ADD TASK LUÔN HIỂN THỊ -->
-        <div class="task-grid-row add-task-row">
-            <CreateTaskInline ListId="_selectedList.ListId"
-                              OnCreated="ReloadTasks" />
-        </div>
-
-    </div>
-}
-
     </div>
 </div>
+
+@if (_openedTaskId != null)
+{
+    <TaskDetailPanel TaskId="_openedTaskId.Value"
+                     OnClose="CloseTaskDetail"
+                     OnTaskChanged="ReloadTasks" />
+}
 
 @code {
 
@@ -149,6 +170,10 @@ else
 
     private IReadOnlyList<TodoTaskListItemDto> _tasks = new List<TodoTaskListItemDto>();
     private bool _isLoadingTasks;
+
+    private CancellationTokenSource? _loadTasksCts;
+
+    private TaskFilterState _filter = new();
 
     // ================= LIFECYCLE =================
 
@@ -191,6 +216,10 @@ else
     private async Task SelectListAsync(TodoListDto list)
     {
         _selectedList = list;
+
+        // Reset filter khi đổi list (UX rõ ràng)
+        _filter = new TaskFilterState();
+
         await LoadTasksAsync(list.ListId);
     }
 
@@ -198,9 +227,26 @@ else
 
     private async Task LoadTasksAsync(Guid listId)
     {
-        _isLoadingTasks = true;
-        _tasks = await TaskApi.GetByListIdAsync(listId);
-        _isLoadingTasks = false;
+        _loadTasksCts?.Cancel();
+        _loadTasksCts = new CancellationTokenSource();
+
+        try
+        {
+            _isLoadingTasks = true;
+
+            _tasks = await TaskApi.QueryAsync(
+                listId,
+                _filter,
+                _loadTasksCts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            // ignore
+        }
+        finally
+        {
+            _isLoadingTasks = false;
+        }
     }
 
     private async Task ReloadTasks()
@@ -209,5 +255,31 @@ else
         {
             await LoadTasksAsync(_selectedList.ListId);
         }
+    }
+
+    // ================= FILTER =================
+
+    private async Task OnFilterChanged(TaskFilterState filter)
+    {
+        _filter = filter;
+
+        if (_selectedList != null)
+        {
+            await LoadTasksAsync(_selectedList.ListId);
+        }
+    }
+
+    // ================= TASK DETAIL =================
+
+    private Guid? _openedTaskId;
+
+    private void OpenTaskDetail(Guid taskId)
+    {
+        _openedTaskId = taskId;
+    }
+
+    private void CloseTaskDetail()
+    {
+        _openedTaskId = null;
     }
 }

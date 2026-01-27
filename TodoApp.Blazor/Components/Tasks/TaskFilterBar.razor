@@ -1,0 +1,159 @@
+﻿@using TodoApp.Contracts.TodoTasks.Enums
+@using TodoApp.Blazor.ViewModels
+
+<div class="task-filter-bar">
+
+    <!-- Filter button -->
+    <button class="filter-btn" @onclick="Toggle">
+        🔍 Filter
+    </button>
+
+    <!-- Active filter pills -->
+    @if (Filter.Status.HasValue)
+    {
+        <span class="filter-pill status">
+            @Filter.Status
+        </span>
+    }
+
+    @if (Filter.Priority.HasValue)
+    {
+        <span class="filter-pill priority">
+            @Filter.Priority
+        </span>
+    }
+
+    @if (Filter.SortByDue)
+    {
+        <span class="filter-pill due">
+            Due @(Filter.DueDirection == SortDirection.Asc ? "↑" : "↓")
+        </span>
+    }
+
+    <!-- Popup -->
+    @if (_isOpen)
+    {
+        <div class="filter-popup">
+
+            <label>Status</label>
+            <select @onchange="OnStatusChanged">
+                <option value="">--</option>
+                @foreach (var s in Enum.GetValues<TodoTaskStatus>())
+                {
+                    <option value="@((int)s)" selected="@(Filter.Status == s)">
+                        @s
+                    </option>
+                }
+            </select>
+
+            <label>Priority</label>
+            <select @onchange="OnPriorityChanged">
+                <option value="">--</option>
+                @foreach (var p in Enum.GetValues<TodoTaskPriority>())
+                {
+                    <option value="@((int)p)" selected="@(Filter.Priority == p)">
+                        @p
+                    </option>
+                }
+            </select>
+
+            <label>Due date</label>
+            <select @onchange="OnDueSortChanged">
+                <option value="">--</option>
+                <option value="asc" selected="@(Filter.SortByDue && Filter.DueDirection == SortDirection.Asc)">
+                    Due ↑ (Soonest)
+                </option>
+                <option value="desc" selected="@(Filter.SortByDue && Filter.DueDirection == SortDirection.Desc)">
+                    Due ↓ (Latest)
+                </option>
+            </select>
+
+            <div class="filter-actions">
+                <button @onclick="Apply" disabled="@(!_isDirty)">
+                    Apply
+                </button>
+
+                <button @onclick="ClearAll" disabled="@(!_hasAnyFilter)">
+                    Clear
+                </button>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public TaskFilterState Filter { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TaskFilterState> FilterChanged { get; set; }
+
+    private bool _isOpen;
+
+    // Snapshot filter lúc popup mở → dùng để so dirty
+    private TaskFilterState _snapshot = new();
+
+    private bool _isDirty => !Filter.Equals(_snapshot);
+
+    private bool _hasAnyFilter =>
+        Filter.Status.HasValue ||
+        Filter.Priority.HasValue ||
+        Filter.SortByDue;
+
+    private void Toggle()
+    {
+        _isOpen = !_isOpen;
+
+        // Khi mở popup → chụp snapshot
+        if (_isOpen)
+        {
+            _snapshot = Filter.Clone();
+        }
+    }
+
+    private void OnStatusChanged(ChangeEventArgs e)
+    {
+        Filter.Status = string.IsNullOrWhiteSpace(e.Value?.ToString())
+            ? null
+            : (TodoTaskStatus)int.Parse(e.Value!.ToString()!);
+    }
+
+    private void OnPriorityChanged(ChangeEventArgs e)
+    {
+        Filter.Priority = string.IsNullOrWhiteSpace(e.Value?.ToString())
+            ? null
+            : (TodoTaskPriority)int.Parse(e.Value!.ToString()!);
+    }
+
+    private void OnDueSortChanged(ChangeEventArgs e)
+    {
+        var v = e.Value?.ToString();
+
+        if (string.IsNullOrWhiteSpace(v))
+        {
+            Filter.SortByDue = false;
+            return;
+        }
+
+        Filter.SortByDue = true;
+        Filter.DueDirection =
+            v == "desc" ? SortDirection.Desc : SortDirection.Asc;
+    }
+
+    private async Task Apply()
+    {
+        _isOpen = false;
+        _snapshot = Filter.Clone(); // cập nhật snapshot
+        await FilterChanged.InvokeAsync(Filter);
+    }
+
+    private async Task ClearAll()
+    {
+        Filter.ClearAll();
+        _snapshot = Filter.Clone();
+        _isOpen = false;
+        await FilterChanged.InvokeAsync(Filter);
+    }
+}
