@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using TodoApp.Blazor.ViewModels;
+using TodoApp.Blazor.ViewModels.MyTask;
 using TodoApp.Contracts.TodoTasks;
 using TodoApp.Contracts.TodoTasks.Enums;
 
@@ -119,7 +119,7 @@ namespace TodoApp.Blazor.Services
             {
                 query["sortBy"] = "DueAt";
                 query["direction"] =
-                    filter.DueDirection == ViewModels.SortDirection.Desc ? "desc" : "asc";
+                    filter.DueDirection == SortDirection.Desc ? "desc" : "asc";
             }
 
             var url =
@@ -129,5 +129,46 @@ namespace TodoApp.Blazor.Services
             return await _http.GetFromJsonAsync<List<TodoTaskListItemDto>>(url, ct)
                 ?? new List<TodoTaskListItemDto>();
         }
+
+        //QueryAsync dùng cho calendar  
+        public async Task<IReadOnlyList<TodoTaskListItemDto>> QueryAsync(
+            Guid listId,
+            TaskFilterState filter,
+            DateTimeOffset? dueFrom,
+            DateTimeOffset? dueTo,
+            CancellationToken ct = default)
+        {
+            var query = new Dictionary<string, string>();
+            query["includeCompleted"] = "true";
+            if (filter.Status.HasValue)
+                query["status"] = ((int)filter.Status.Value).ToString();
+
+            if (filter.Priority.HasValue)
+                query["priority"] = ((int)filter.Priority.Value).ToString();
+
+            if (filter.SortByDue)
+            {
+                query["sortBy"] = "DueAt";
+                query["direction"] =
+                    filter.DueDirection == SortDirection.Desc ? "desc" : "asc";
+            }
+
+            // 🔑 Calendar date range
+            if (dueFrom.HasValue)
+                query["dueFrom"] =
+                    Uri.EscapeDataString(dueFrom.Value.ToString("O"));
+
+            if (dueTo.HasValue)
+                query["dueTo"] =
+                    Uri.EscapeDataString(dueTo.Value.ToString("O"));
+
+            var url =
+                $"api/todolists/{listId}/tasks/query?" +
+                string.Join("&", query.Select(x => $"{x.Key}={x.Value}"));
+
+            return await _http.GetFromJsonAsync<List<TodoTaskListItemDto>>(url, ct)
+                ?? new List<TodoTaskListItemDto>();
+        }
+
     }
 }

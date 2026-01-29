@@ -1,6 +1,6 @@
 ﻿using TodoApp.Contracts.TodoTasks.Enums;
 
-namespace TodoApp.Blazor.ViewModels
+namespace TodoApp.Blazor.ViewModels.MyTask
 {
     /// <summary>
     /// UI state for task filtering & sorting.
@@ -52,10 +52,10 @@ namespace TodoApp.Blazor.ViewModels
         {
             return new TaskFilterState
             {
-                Status = this.Status,
-                Priority = this.Priority,
-                SortByDue = this.SortByDue,
-                DueDirection = this.DueDirection
+                Status = Status,
+                Priority = Priority,
+                SortByDue = SortByDue,
+                DueDirection = DueDirection
             };
         }
 

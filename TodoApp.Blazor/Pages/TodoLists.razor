@@ -1,16 +1,16 @@
-﻿@page "/"
-@page "/todolists"
+﻿@page "/todolists"
 
 @using Microsoft.AspNetCore.Components.Forms
-@using TodoApp.Blazor.Forms
 @using TodoApp.Blazor.Components.Tasks
+@using TodoApp.Blazor.Forms
+@using TodoApp.Blazor.ViewModels
+@using TodoApp.Blazor.ViewModels.MyTask
 @using TodoApp.Contracts.TodoLists
 @using TodoApp.Contracts.TodoTasks
-@using TodoApp.Blazor.ViewModels
 @inject TodoApp.Blazor.Services.TodoListApiClient ListApi
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 
-<h2>Todo Lists</h2>
+<h2>My Tasks</h2>
 
 <div class="todo-page">
 
@@ -275,6 +275,7 @@
 
     private void OpenTaskDetail(Guid taskId)
     {
+        Console.WriteLine("OPEN TASK: " + taskId);
         _openedTaskId = taskId;
     }
 

@@ -1,0 +1,99 @@
+﻿@namespace TodoApp.Blazor.Components.Calendars
+
+@using Microsoft.AspNetCore.Components.Web
+@using TodoApp.Contracts.TodoTasks
+@using TodoApp.Contracts.TodoTasks.Enums
+
+@inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
+
+<div class="quick-task-overlay">
+    <div class="quick-task-backdrop" @onclick="Close"></div>
+
+    <div class="quick-task-panel">
+        <h4>@Date.ToString("dddd, dd MMM yyyy")</h4>
+
+        <input class="form-control"
+               placeholder="Task title…"
+               @bind="_title"
+               @onkeydown="OnKeyDown"
+               autofocus />
+    </div>
+</div>
+
+@code {
+    // =====================
+    // PARAMS
+    // =====================
+    [Parameter, EditorRequired]
+    public DateOnly Date { get; set; }
+
+    [Parameter, EditorRequired]
+    public Guid ListId { get; set; }
+
+    [Parameter]
+    public EventCallback OnCreated { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    // =====================
+    // STATE
+    // =====================
+    private string _title = string.Empty;
+    private bool _isSubmitting;
+
+    // =====================
+    // EVENTS
+    // =====================
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            await Close();
+            return;
+        }
+
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_title))
+        {
+            await CreateTaskAsync();
+        }
+    }
+
+    private async Task CreateTaskAsync()
+    {
+        if (_isSubmitting) return;
+        _isSubmitting = true;
+
+        try
+        {
+            // 📌 DueAt = start of selected day (UTC)
+            var dueAt = new DateTimeOffset(
+                Date.ToDateTime(TimeOnly.MinValue),
+                TimeSpan.Zero
+            );
+
+            var request = new CreateTodoTaskRequest(
+                ListId,
+                _title.Trim(),
+                null,                       // description
+                TodoTaskPriority.None,      // priority
+                dueAt
+            );
+
+            await TaskApi.CreateAsync(ListId, request);
+
+            await OnCreated.InvokeAsync();
+            await Close();
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task Close()
+    {
+        _title = string.Empty;
+        await OnClose.InvokeAsync();
+    }
+}

@@ -1,0 +1,29 @@
+﻿@using TodoApp.Contracts.TodoTasks
+
+<div class="day-overlay">
+    <div class="day-backdrop" @onclick="Close"></div>
+
+    <div class="day-panel">
+        <h4>@Date.ToString("dddd, dd MMM yyyy")</h4>
+
+        @foreach (var task in Tasks)
+        {
+            <div class="day-task"
+                 @onclick="() => OnTaskSelected.InvokeAsync(task.TaskId)">
+                @task.Title
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public DateOnly Date { get; set; }
+    [Parameter] public IReadOnlyList<TodoTaskListItemDto> Tasks { get; set; } = [];
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback<Guid> OnTaskSelected { get; set; }
+
+    private async Task Close()
+    {
+        await OnClose.InvokeAsync();
+    }
+}

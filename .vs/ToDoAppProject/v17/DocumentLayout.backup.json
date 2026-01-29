@@ -1,88 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\todo-app\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskprioritycell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskprioritycell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\components\\tasks\\taskprioritycell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\components\\tasks\\taskprioritycell.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\todolists.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\todolists.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\todolists.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TodoLists.razor.css",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "RelativeToolTip": "TodoApp.Blazor\\Pages\\TodoLists.razor.css",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAAwF0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-27T11:22:44.846Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TaskPriorityCell.razor",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
-              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T11:21:06.253Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TaskPriorityCell.razor.css",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
-              "RelativeToolTip": "TodoApp.Blazor\\Components\\Tasks\\TaskPriorityCell.razor.css",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-27T11:21:05.105Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TodoLists.razor",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\TodoLists.razor",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\TodoLists.razor",
-              "RelativeToolTip": "TodoApp.Blazor\\Pages\\TodoLists.razor",
-              "ViewState": "AgIAAAQBAAAAAAAAAAAkwB0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T11:20:56.749Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

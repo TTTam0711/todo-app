@@ -94,5 +94,6 @@ main {
     flex: 1;
     padding: 24px;
     background: #fafafa;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: visible;
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Radzen;
 using TodoApp.Blazor;
 using TodoApp.Blazor.Services;
 
@@ -16,5 +17,5 @@ builder.Services.AddScoped(_ =>
 
 builder.Services.AddScoped<TodoListApiClient>();
 builder.Services.AddScoped<TodoTaskApiClient>();
-
+builder.Services.AddRadzenComponents();
 await builder.Build().RunAsync();
