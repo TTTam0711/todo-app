@@ -1,12 +1,69 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\todo-app\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-09T16:49:39.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Login.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Login.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\Login.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Login.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Pages\\Login.razor",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAEYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-09T16:48:09.305Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Home.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\Home.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Home.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-09T16:46:51.326Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

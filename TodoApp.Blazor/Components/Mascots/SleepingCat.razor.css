@@ -1,0 +1,41 @@
+﻿.sleeping-cat-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px auto 16px;
+    padding-top: 12px;
+    opacity: 0.95;
+}
+
+    .sleeping-cat-wrapper svg {
+        margin-bottom: 8px;
+    }
+
+.empty-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+.empty-sub {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+.cat.sleeping .belly {
+    animation: breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(1.05);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}

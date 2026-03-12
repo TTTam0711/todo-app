@@ -1,0 +1,27 @@
+﻿.pixel-cat {
+    /* 1 frame */
+    width: 16px;
+    height: 16px;
+    background-image: url("/images/cat-full.png");
+    background-repeat: no-repeat;
+    /* ⚠️ RẤT QUAN TRỌNG */
+    background-size: auto;
+    image-rendering: pixelated;
+    overflow: hidden;
+    /* scale cho UI */
+    transform: scale(4);
+    transform-origin: top center;
+    margin: 40px auto 0 auto;
+    display: block;
+    animation: catIdle 1.2s steps(4) infinite;
+}
+
+@keyframes catIdle {
+    0% {
+        background-position: 0px 0px;
+    }
+
+    100% {
+        background-position: -64px 0px;
+    }
+}

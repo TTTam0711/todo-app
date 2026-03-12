@@ -1,0 +1,54 @@
+﻿@page "/"
+@layout LandingLayout
+@inject NavigationManager Nav
+
+<div class="landing">
+
+    <div class="topbar">
+        <div class="brand" @onclick="@(() => Nav.NavigateTo("/"))">
+            🐱 <b>CatTask</b>
+        </div>
+
+        <div class="navlinks">
+            <button class="nav-btn" @onclick="@(() => Nav.NavigateTo("/dashboard"))">
+                Home
+            </button>
+
+            <button class="nav-btn" @onclick="@(() => Nav.NavigateTo("/login"))">
+                Log in
+            </button>
+
+            <button class="btn-signup" @onclick="@(() => Nav.NavigateTo("/register"))">
+                Sign Up
+            </button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-left">
+            <h1>Organize your tasks with your fluffy assistant 🐾</h1>
+
+            <p>
+                Boost your productivity by managing your tasks, deadlines, and goals with
+                the help of your adorable cat assistant.
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn-primary" @onclick="@(() => Nav.NavigateTo("/register"))">
+                    Get Started - It's Free
+                </button>
+
+                <button class="link-btn" @onclick="@(() => Nav.NavigateTo("/dashboard"))">
+                    See Dashboard →
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="cat-box">
+                <div style="font-size:72px;">🐱</div>
+                <div class="muted">Your cat assistant</div>
+            </div>
+        </div>
+    </div>
+</div>

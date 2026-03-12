@@ -1,117 +1,42 @@
-﻿.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-}
-
-/* ===== HEADER ===== */
-.calendar-header {
-    text-align: center;
-    font-weight: bold;
-    padding: 6px 0;
-}
-
-/* ===== CELL ===== */
-.calendar-cell {
-    min-height: 100px;
-    border: 1px solid #ddd;
-    padding: 4px;
-    background: #fff;
-    position: relative;
-    /* QUAN TRỌNG cho drag */
-    overflow: hidden;
-}
-
-    .calendar-cell.other-month {
-        background: #f7f7f7;
-        color: #aaa;
-    }
-
-    .calendar-cell.today {
-        border: 2px solid #2563eb;
-        background: #eff6ff;
-    }
-
-        .calendar-cell.today .day-number {
-            color: #2563eb;
-        }
-
-    /* Highlight khi drag hover */
-    .calendar-cell.drag-hover {
-        background: #eef6ff;
-        border-color: #3b82f6;
-    }
-
-/* ===== DAY NUMBER ===== */
-.day-number {
-    font-size: 12px;
-    font-weight: bold;
-    pointer-events: none; /* KHÔNG chặn drop */
-}
-
-/* ===== TASK LIST ===== */
-.calendar-tasks {
-    margin-top: 4px;
+﻿/* ================= ROOT ================= */
+.calendar-root {
+    padding: 24px;
+    background: #f8fafc;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    /* CHO PHÉP DROP XUYÊN QUA */
-    position: relative;
-    z-index: 1;
 }
 
-/* ===== TASK ===== */
-.calendar-task {
-    background: #e7f1ff;
-    border-radius: 3px;
-    padding: 2px 4px;
-    font-size: 11px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: grab;
-    user-select: none;
-    /* QUAN TRỌNG */
-    pointer-events: auto;
-    position: relative;
-    z-index: 2;
-}
-
-    .calendar-task:active {
-        cursor: grabbing;
-    }
-
-    .calendar-task.clickable:hover {
-        background: #d6e8ff;
-    }
-
-    /* ===== OVERDUE ===== */
-    .calendar-task.overdue {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-        .calendar-task.overdue:hover {
-            background: #fecaca;
-        }
-
-/* ===== + MORE ===== */
-.calendar-more {
-    font-size: 11px;
-    color: #666;
-    cursor: pointer;
-    /* KHÔNG CHẶN DROP */
-    pointer-events: auto;
-}
-
-/* ===== HEADER BAR ===== */
-.calendar-title-row {
-    display: flex;
-    justify-content: space-between;
+/* ================= HEADER BAR ================= */
+.calendar-header-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    margin-bottom: 12px;
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
+.calendar-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.calendar-list-select {
+    max-width: 240px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+    .calendar-list-select:focus {
+        outline: none;
+        border-color: #6366f1;
+    }
+
+/* ================= NAV ================= */
 .calendar-nav {
     display: flex;
     align-items: center;
@@ -120,24 +45,277 @@
 
 .nav-btn {
     border: none;
-    background: #f3f4f6;
-    padding: 4px 10px;
-    border-radius: 6px;
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 6px 10px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background .15s;
 }
 
     .nav-btn:hover {
-        background: #e5e7eb;
+        background: #e0e7ff;
     }
 
 .month-label {
     font-weight: 600;
-}
-.ghost-task {
-    background: #e7f1ff;
-    border-radius: 4px;
-    padding: 4px 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,.2);
-    opacity: .9;
+    color: #334155;
+    min-width: 120px;
+    text-align: center;
 }
 
+/* ================= STATES ================= */
+.calendar-loading,
+.calendar-empty {
+    padding: 24px;
+    color: #64748b;
+}
+
+/* ================= CARD ================= */
+.calendar-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+/* ================= GRID ================= */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+/* ================= WEEK HEADER ================= */
+.calendar-header {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    padding-bottom: 4px;
+}
+
+/* ================= CELL ================= */
+.calendar-cell {
+    min-height: 110px;
+    padding: 8px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    cursor: pointer;
+    position: relative;
+    transition: background .15s, box-shadow .15s;
+}
+
+    .calendar-cell:hover {
+        background: #f9fafb;
+        box-shadow: 0 6px 18px rgba(0,0,0,.04);
+    }
+
+    .calendar-cell.other-month {
+        background: #f8fafc;
+        color: #cbd5f5;
+    }
+
+    .calendar-cell.today {
+        border: 2px solid #6366f1;
+        background: #eef2ff;
+    }
+
+/* ================= DAY NUMBER ================= */
+.day-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 4px;
+    pointer-events: none;
+}
+
+.calendar-cell.other-month .day-number {
+    color: #94a3b8;
+}
+
+/* ================= TASK LIST ================= */
+.calendar-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* ================= TASK ================= */
+.calendar-task {
+    max-width: 100%;
+    border-radius: 10px; /* không pill nữa */
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    transition: transform .08s, box-shadow .12s, background .12s;
+}
+
+    /* hover nhẹ thôi */
+    .calendar-task:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    /* ================= PRIORITY COLORS (soft pastel like sample) ================= */
+    .calendar-task.priority-high {
+        background: #ffe4e6;
+        color: #9f1239;
+    }
+
+    .calendar-task.priority-medium {
+        background: #fff7d6;
+        color: #92400e;
+    }
+
+    .calendar-task.priority-low {
+        background: #e0f2fe;
+        color: #075985;
+    }
+
+    .calendar-task.priority-optional {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .calendar-task.priority-none {
+        background: #eef2ff;
+        color: #3730a3;
+    }
+
+    /* ================= OVERDUE (badge only, không phá màu) ================= */
+    .calendar-task.overdue {
+        position: relative;
+        padding-left: 16px; /* chừa chỗ cho badge */
+    }
+
+        /* chấm đỏ nhỏ giống warning */
+        .calendar-task.overdue::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #fb7185;
+            position: absolute;
+            left: 7px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+/* ================= OVERDUE ICON ================= */
+.calendar-overdue {
+    margin-left: 4px;
+}
+
+/* ================= + MORE ================= */
+.calendar-more {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6366f1;
+    cursor: pointer;
+    padding-left: 6px;
+}
+
+    .calendar-more:hover {
+        text-decoration: underline;
+    }
+
+/* ================= GHOST ================= */
+.ghost-task {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    background: linear-gradient(135deg, #c7d2fe, #e0e7ff);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e1b4b;
+    box-shadow: 0 16px 40px rgba(0,0,0,.25);
+    opacity: .95;
+}
+
+/* ================= MASCOT ================= */
+.calendar-mascot {
+    margin-top: 12px;
+    padding: 10px 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    user-select: none;
+}
+
+.mascot-img {
+    width: 120px;
+    max-width: 100%;
+    height: auto;
+    opacity: 0.95;
+}
+
+.mascot-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.mascot-subtitle {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.2;
+}
+
+/* ================= PRIORITY LEGEND ================= */
+.priority-legend {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    display: inline-block;
+}
+
+    .legend-dot.high {
+        background: #ef4444;
+    }
+
+    .legend-dot.medium {
+        background: #f59e0b;
+    }
+
+    .legend-dot.low {
+        background: #3b82f6;
+    }
+
+    .legend-dot.optional {
+        background: #94a3b8;
+    }

@@ -6,46 +6,67 @@
 @using TodoApp.Contracts.TodoTasks
 @using TodoApp.Blazor.Components.Tasks
 @using TodoApp.Blazor.Components.Calendars
+@using TodoApp.Blazor.Components.Mascots
+@using Microsoft.AspNetCore.Components.Web
 @using Radzen
 @using Radzen.Blazor
+@using TodoApp.Contracts.TodoTasks.Enums
 
 @inject TodoApp.Blazor.Services.TodoListApiClient ListApi
 @inject TodoApp.Blazor.Services.TodoTaskApiClient TaskApi
 @inject TooltipService TooltipService
 
-<div class="calendar-root" @onmousemove="OnMouseMove">
+<div class="calendar-root"
+     @onmousemove="OnMouseMove"
+     @onmouseup="OnGlobalMouseUp">
 
-    <h2>Calendar</h2>
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="calendar-header-bar">
+        <h2 class="calendar-title">Calendar</h2>
+
+        @if (!_isLoadingLists && _lists.Count > 0)
+        {
+            <select class="calendar-list-select"
+                    @onchange="OnListChanged">
+                @foreach (var list in _lists)
+                {
+                    <option value="@list.ListId"
+                            selected="@(list.ListId == _selectedList?.ListId)">
+                        @list.Name
+                    </option>
+                }
+            </select>
+        }
+
+        <div class="calendar-nav">
+            <button class="nav-btn" @onclick="GoToPrevMonth">←</button>
+            <span class="month-label">
+                @_calendarState.CurrentMonth.ToString("MMMM yyyy")
+            </span>
+            <button class="nav-btn" @onclick="GoToNextMonth">→</button>
+        </div>
+    </div>
 
     @if (_isLoadingLists)
     {
-        <p>Loading lists...</p>
+        <p class="calendar-loading">Loading lists…</p>
     }
-    else if (_selectedList == null)
+    else if (_lists.Count == 0)
     {
-        <p>No lists</p>
+        <p class="calendar-empty">No lists</p>
+    }
+    else if (_isLoadingTasks)
+    {
+        <p class="calendar-loading">Loading tasks…</p>
     }
     else
     {
-        <div class="calendar-title-row">
-            <strong>@_selectedList.Name</strong>
-            <div class="calendar-nav">
-                <button class="nav-btn" @onclick="GoToPrevMonth">←</button>
-                <span class="month-label">
-                    @_calendarState.CurrentMonth.ToString("MMMM yyyy")
-                </span>
-                <button class="nav-btn" @onclick="GoToNextMonth">→</button>
-            </div>
-        </div>
+        <!-- ================= CALENDAR CARD ================= -->
+        <div class="calendar-card">
 
-        @if (_isLoadingTasks)
-        {
-            <p>Loading tasks...</p>
-        }
-        else
-        {
             <div class="calendar-grid">
 
+                <!-- WEEK HEADER -->
                 <div class="calendar-header">Sun</div>
                 <div class="calendar-header">Mon</div>
                 <div class="calendar-header">Tue</div>
@@ -60,23 +81,26 @@
                     var isToday = day == DateOnly.FromDateTime(DateTime.Today);
 
                     <div class="calendar-cell @(isCurrentMonth ? "" : "other-month") @(isToday ? "today" : "")"
-                         @onmouseup="() => OnCellMouseUp(day)"
-                         @onclick="() => { if (!_isDragging) OpenQuickCreate(day); }">
+                         @onmousedown="() => StartCellDrag(day)"
+                         @onmouseup="() => DropOnCell(day)"
+                         @onclick="() => OpenQuickCreate(day)">
 
                         <div class="day-number">@day.Day</div>
 
                         @if (_tasksByDate.TryGetValue(day, out var tasks))
                         {
-                            <div class="calendar-tasks" @onclick:stopPropagation="true">
+                            <div class="calendar-tasks"
+                                 @onclick:stopPropagation="true">
 
                                 @foreach (var task in tasks.Take(2))
                                 {
-                                    <div class="calendar-task clickable @(task.IsOverdue ? "overdue" : "")"
-                                         @ref="@_taskRefs[task.TaskId]"
-                                         @onmouseenter="() => OnTaskMouseEnter(task)"
-                                         @onmouseleave="OnTaskMouseLeave"
-                                         @onmousedown="() => OnTaskMouseDown(task.TaskId)"
-                                         @onclick="() => { if (!_isDragging) OpenTaskDetail(task.TaskId); }">
+                                    <div class="calendar-task clickable
+                                                                        @(task.IsOverdue ? "overdue" : "")
+                                                                        @GetPriorityClass(task)"
+                                         @ref="_taskRefs[task.TaskId]"
+                                         @onmouseenter="() => ShowTooltip(task)"
+                                         @onmouseleave="HideTooltip"
+                                         @onclick="() => OpenTaskDetail(task.TaskId)">
                                         @task.Title
                                         @if (task.IsOverdue)
                                         {
@@ -97,24 +121,77 @@
                     </div>
                 }
             </div>
-        }
+            <div class="calendar-mascot">
+
+                <img class="mascot-img"
+                     src="@(HasAnyTaskInCurrentMonth
+                                         ? "images/cat-awake.png"
+                                         : "images/cat-sleep.png")"
+                 alt="Mascot" />
+
+                <div class="mascot-title">@MascotTitle</div>
+                <div class="mascot-subtitle">@MascotSubtitle</div>
+
+            </div>
+            <div class="priority-legend">
+                <div class="legend-item">
+                    <span class="legend-dot high"></span>
+                    High
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot medium"></span>
+                    Medium
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot low"></span>
+                    Low
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot optional"></span>
+                    Optional
+                </div>
+            </div>
+        </div>
+        
     }
 
-    @if (_ghostTaskId != null)
+    <!-- ================= GHOST ================= -->
+    @if (_draggingTask != null)
     {
-        var ghostTask = _tasks.FirstOrDefault(t => t.TaskId == _ghostTaskId);
-        if (ghostTask != null)
-        {
-            <div class="calendar-task ghost-task"
-                 style="
-                        position:fixed;
-                        left:@($"{_mouseX}px");
-                        top:@($"{_mouseY}px");
-                        pointer-events:none;
-                        z-index:9999;">
-                @ghostTask.Title
-            </div>
-        }
+        <div class="calendar-task ghost-task"
+             style="left:@($"{_mouseX}px"); top:@($"{_mouseY}px");">
+            @_draggingTask.Title
+        </div>
+    }
+
+    <!-- ================= DAY PANEL ================= -->
+    @if (_openedDay.HasValue &&
+        _tasksByDate.TryGetValue(_openedDay.Value, out var dayTasks))
+    {
+        <CalendarDayPanel Date="_openedDay.Value"
+                          Tasks="dayTasks"
+                          OnClose="@(() => _openedDay = null)"
+                          OnTaskSelected="OnTaskSelectedFromDay" />
+    }
+
+    <!-- ================= QUICK CREATE ================= -->
+    @if (_quickCreateDay.HasValue && _selectedList != null)
+    {
+        <CreateTaskQuickPanel Date="_quickCreateDay.Value"
+                              ListId="_selectedList.ListId"
+                              OnCreated="ReloadTasks"
+                              OnClose="@(() => _quickCreateDay = null)" />
+    }
+
+    <!-- ================= DETAIL ================= -->
+    @if (_openedTaskId.HasValue)
+    {
+        <TaskDetailPanel TaskId="_openedTaskId.Value"
+                         OnClose="@(() => _openedTaskId = null)"
+                         OnTaskChanged="ReloadTasks" />
     }
 
 </div>
@@ -125,13 +202,13 @@
     private readonly Guid _ownerUserId =
         Guid.Parse("7D97D295-C6F0-F011-9685-782B464EB9F6");
 
-    private IReadOnlyList<TodoListDto> _lists = new List<TodoListDto>();
+    private IReadOnlyList<TodoListDto> _lists = [];
     private TodoListDto? _selectedList;
     private bool _isLoadingLists;
 
     private readonly MonthCalendarState _calendarState = new();
 
-    private IReadOnlyList<TodoTaskListItemDto> _tasks = new List<TodoTaskListItemDto>();
+    private IReadOnlyList<TodoTaskListItemDto> _tasks = [];
     private Dictionary<DateOnly, List<TodoTaskListItemDto>> _tasksByDate = new();
     private bool _isLoadingTasks;
 
@@ -140,13 +217,10 @@
     private DateOnly? _quickCreateDay;
 
     // ================= DRAG =================
-    private Guid? _draggingTaskId;
-    private Guid? _ghostTaskId;
-    private bool _isDragging;
+    private TodoTaskListItemDto? _draggingTask;
     private double _mouseX;
     private double _mouseY;
 
-    // 🔥 QUAN TRỌNG: mỗi task có 1 ElementReference riêng
     private Dictionary<Guid, ElementReference> _taskRefs = new();
 
     private readonly TaskFilterState _filter = new()
@@ -176,8 +250,13 @@
 
         _isLoadingTasks = true;
 
-        var from = _calendarState.GridStartDate.ToDateTime(TimeOnly.MinValue);
-        var to = _calendarState.GridEndDate.ToDateTime(TimeOnly.MaxValue);
+        var from = new DateTimeOffset(
+            _calendarState.GridStartDate.ToDateTime(TimeOnly.MinValue),
+            TimeSpan.Zero);
+
+        var to = new DateTimeOffset(
+            _calendarState.GridEndDate.ToDateTime(TimeOnly.MaxValue),
+            TimeSpan.Zero);
 
         _tasks = await TaskApi.QueryAsync(
             _selectedList.ListId,
@@ -190,7 +269,6 @@
             .GroupBy(t => DateOnly.FromDateTime(t.DueAt!.Value.DateTime))
             .ToDictionary(g => g.Key, g => g.ToList());
 
-        // rebuild refs
         _taskRefs = _tasks.ToDictionary(t => t.TaskId, _ => new ElementReference());
 
         _isLoadingTasks = false;
@@ -206,83 +284,125 @@
         }
     }
 
+    // ================= LIST =================
+    private async Task OnListChanged(ChangeEventArgs e)
+    {
+        if (!Guid.TryParse(e.Value?.ToString(), out var listId))
+            return;
+
+        if (_selectedList?.ListId == listId)
+            return;
+
+        _selectedList = _lists.FirstOrDefault(l => l.ListId == listId);
+
+        _openedDay = null;
+        _openedTaskId = null;
+        _quickCreateDay = null;
+        _draggingTask = null;
+
+        await LoadTasksAsync();
+    }
+
+    // ================= DRAG =================
+    private void StartCellDrag(DateOnly day)
+    {
+        if (_tasksByDate.TryGetValue(day, out var tasks))
+            _draggingTask = tasks.FirstOrDefault();
+    }
+
+    private async Task DropOnCell(DateOnly targetDay)
+    {
+        if (_draggingTask == null || _selectedList == null) return;
+
+        await TaskApi.ChangeDueDateAsync(
+            _draggingTask.TaskId,
+            new ChangeTodoTaskDueDateRequest(
+                new DateTimeOffset(
+                    targetDay.ToDateTime(TimeOnly.MinValue),
+                    TimeSpan.Zero)));
+
+        _draggingTask = null;
+        await LoadTasksAsync();
+    }
+
+    private void OnGlobalMouseUp()
+    {
+        _draggingTask = null;
+    }
+
+    private void OnMouseMove(MouseEventArgs e)
+    {
+        if (_draggingTask == null) return;
+        _mouseX = e.ClientX + 12;
+        _mouseY = e.ClientY + 12;
+    }
+
+    // ================= UI =================
+    private void OpenDay(DateOnly day) => _openedDay = day;
+    private void OpenTaskDetail(Guid id) => _openedTaskId = id;
+    private void OpenQuickCreate(DateOnly day) => _quickCreateDay = day;
+
+    private void OnTaskSelectedFromDay(Guid taskId)
+    {
+        _openedDay = null;
+        _openedTaskId = taskId;
+    }
+
+    private async Task ReloadTasks()
+    {
+        await LoadTasksAsync();
+    }
+
+    // ================= TOOLTIP =================
+    private void ShowTooltip(TodoTaskListItemDto task)
+    {
+        TooltipService.Open(_taskRefs[task.TaskId], ts =>
+        @<RadzenStack Orientation="Orientation.Vertical"
+                              Gap="4px"
+                              class="rz-p-4">
+            <RadzenText TextStyle="TextStyle.H6">@task.Title</RadzenText>
+        </RadzenStack>);
+    }
+
+    private void HideTooltip() => TooltipService.Close();
+
     private async Task GoToPrevMonth()
     {
         _calendarState.GoToPreviousMonth();
-        _openedDay = null;
         await LoadTasksAsync();
     }
 
     private async Task GoToNextMonth()
     {
         _calendarState.GoToNextMonth();
-        _openedDay = null;
         await LoadTasksAsync();
     }
 
-    private void OpenDay(DateOnly day) => _openedDay = day;
-    private void OpenTaskDetail(Guid id) => _openedTaskId = id;
+    private bool HasAnyTaskInCurrentMonth =>
+        _tasks.Any(t =>
+            t.DueAt.HasValue &&
+            t.DueAt.Value.DateTime.Year == _calendarState.CurrentMonth.Year &&
+            t.DueAt.Value.DateTime.Month == _calendarState.CurrentMonth.Month);
+    private string MascotTitle =>
+        HasAnyTaskInCurrentMonth
+        ? "Let’s get things done ✨"
+        : "No tasks yet 😊";
 
-    private void OpenQuickCreate(DateOnly day) => _quickCreateDay = day;
+    private string MascotSubtitle =>
+        HasAnyTaskInCurrentMonth
+            ? "Your tasks are waiting — I’ll keep an eye on them 🐾"
+            : "Add something you don’t want to forget 🐾";
 
-    private void OnTaskMouseDown(Guid taskId)
+    private string GetPriorityClass(TodoTaskListItemDto task)
     {
-        TooltipService.Close();
-        _draggingTaskId = taskId;
-        _ghostTaskId = taskId;
-        _isDragging = true;
-    }
-
-    private async Task OnCellMouseUp(DateOnly targetDay)
-    {
-        if (!_isDragging || _draggingTaskId == null || _selectedList == null)
-            return;
-
-        await TaskApi.ChangeDueDateAsync(
-            _draggingTaskId.Value,
-            new ChangeTodoTaskDueDateRequest(
-                new DateTimeOffset(targetDay.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero)));
-
-        _draggingTaskId = null;
-        _ghostTaskId = null;
-        _isDragging = false;
-
-        await LoadTasksAsync();
-    }
-
-    private void OnMouseMove(MouseEventArgs e)
-    {
-        if (!_isDragging) return;
-        _mouseX = e.ClientX + 12;
-        _mouseY = e.ClientY + 12;
-    }
-
-    // ================= TOOLTIP =================
-    void OnTaskMouseEnter(TodoTaskListItemDto task)
-    {
-        if (_isDragging) return;
-
-        TooltipService.Open(_taskRefs[task.TaskId], ts =>
-        @<RadzenStack Orientation="Orientation.Vertical" Gap="4px" class="rz-p-4"
-                              Style="min-width:220px; max-width:360px;">
-            <RadzenText TextStyle="TextStyle.H6">@task.Title</RadzenText>
-
-        @if (task.DueAt.HasValue)
+        // Đổi "task.Priority" theo đúng field thật trong DTO của bạn
+        return task.Priority switch
         {
-                <RadzenText TextStyle="TextStyle.Body2">
-                    📅 @task.DueAt.Value.ToString("dddd, MMM d")
-                </RadzenText>
-        }
-
-        @if (task.IsOverdue)
-        {
-                <RadzenText TextStyle="TextStyle.Body2" Style="color:#dc2626;">
-                    ⏰ Overdue
-                </RadzenText>
-        }
-        </RadzenStack>,
-        new TooltipOptions { Position = TooltipPosition.Right, Duration = null });
+            TodoTaskPriority.High => "priority-high",
+            TodoTaskPriority.Medium => "priority-medium",
+            TodoTaskPriority.Low => "priority-low",
+            TodoTaskPriority.Optional => "priority-optional",
+            _ => "priority-none"
+        };
     }
-
-    void OnTaskMouseLeave() => TooltipService.Close();
 }

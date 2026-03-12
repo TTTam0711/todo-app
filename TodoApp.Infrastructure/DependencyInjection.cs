@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Application.Interfaces.Repositories;
 using TodoApp.Application.UseCases.Lists;
+using TodoApp.Infrastructure.Authentication.Jwt;
+using TodoApp.Infrastructure.Authentication.Security.Passwords;
 using TodoApp.Infrastructure.Mappings;
 using TodoApp.Infrastructure.Persistence.Context;
 using TodoApp.Infrastructure.Repositories;
@@ -18,6 +21,11 @@ namespace TodoApp.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtOptions>(
+                        configuration.GetSection(JwtOptions.SectionName));
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             // AutoMapper
             services.AddAutoMapper(typeof(TodoMappingProfile).Assembly);
 
@@ -31,6 +39,7 @@ namespace TodoApp.Infrastructure
             services.AddScoped<ITodoListRepository, TodoListRepository>();
             services.AddScoped<ISubtaskRepository, SubtaskRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<AppUserRepository>();
             return services;
 
             

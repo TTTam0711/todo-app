@@ -1,18 +1,20 @@
-﻿<div class="sidebar-card">
+﻿@inject NavigationManager Nav
 
-    <!-- Decorative cat image (static, NOT user avatar) -->
+<div class="sidebar-card">
+
     <div class="sidebar-header">
         <img src="/images/sidebar-cat.png"
              alt=""
              class="sidebar-image" />
+
         <div class="sidebar-greeting">
-            Hi, Nam Nguyen!
+            Hi! 👋
         </div>
     </div>
 
-    <!-- Menu -->
     <nav class="sidebar-menu">
-        <NavLink href="/"
+
+        <NavLink href="/dashboard"
                  class="sidebar-item"
                  Match="NavLinkMatch.All">
             <span>🏠</span>
@@ -38,16 +40,24 @@
             <span>⚙️</span>
             <span>Settings</span>
         </NavLink>
-    </nav>
 
-    <!-- Pomodoro -->
-    <div class="sidebar-footer">
-        <div class="pomodoro-card">
-            <div class="pomodoro-time">25:00</div>
-            <button class="pomodoro-btn">
-                Start
-            </button>
-        </div>
-    </div>
+        <hr />
+
+        <NavLink href="/login" class="sidebar-item">
+            <span>🔐</span>
+            <span>Login</span>
+        </NavLink>
+
+        <NavLink href="/register" class="sidebar-item">
+            <span>📝</span>
+            <span>Register</span>
+        </NavLink>
+
+        <NavLink href="/" class="sidebar-item">
+            <span>🌸</span>
+            <span>Landing</span>
+        </NavLink>
+
+    </nav>
 
 </div>
