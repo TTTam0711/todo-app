@@ -21,5 +21,7 @@ public partial class Subtask
 
     public byte[] RowVersion { get; set; } = null!;
 
+    public int? EstimatedMinutes { get; set; }
+
     public virtual TodoTask Task { get; set; } = null!;
 }

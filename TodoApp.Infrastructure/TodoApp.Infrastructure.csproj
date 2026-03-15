@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Caching\" />
-    <Folder Include="Persistence\Context\" />
+    <Folder Include="Persistence\DbContext\" />
   </ItemGroup>
 
   <ItemGroup>

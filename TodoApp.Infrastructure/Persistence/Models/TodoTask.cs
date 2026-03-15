@@ -23,7 +23,7 @@ public partial class TodoTask
 
     public DateTimeOffset? CompletedAt { get; set; }
 
-    public int? EstimatedMinutes { get; set; }
+    public int EstimatedMinutes { get; set; }
 
     public int? ReminderMinutesBefore { get; set; }
 
@@ -46,6 +46,12 @@ public partial class TodoTask
     public DateTime UpdatedAt { get; set; }
 
     public byte[] RowVersion { get; set; } = null!;
+
+    public bool IsAiGenerated { get; set; }
+
+    public string? AiSource { get; set; }
+
+    public string? AiRawInput { get; set; }
 
     public virtual ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
 

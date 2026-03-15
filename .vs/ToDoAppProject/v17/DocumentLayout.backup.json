@@ -3,6 +3,26 @@
   "WorkspaceRootPath": "D:\\todo-app\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|d:\\todo-app\\todoapp.infrastructure\\persistence\\context\\todoappdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|solutionrelative:todoapp.infrastructure\\persistence\\context\\todoappdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|d:\\todo-app\\todoapp.infrastructure\\persistence\\models\\aiparsedinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|solutionrelative:todoapp.infrastructure\\persistence\\models\\aiparsedinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|d:\\todo-app\\todoapp.infrastructure\\persistence\\models\\todotask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CD56B04A-AB13-4444-BC7E-F8A575287111}|TodoApp.Infrastructure\\TodoApp.Infrastructure.csproj|solutionrelative:todoapp.infrastructure\\persistence\\models\\todotask.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|d:\\todo-app\\todoapp.domain\\entities\\enums\\todotaskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6555C06-C1A7-4DFC-B5CD-C169AF95DBBB}|TodoApp.Domain\\TodoApp.Domain.csproj|solutionrelative:todoapp.domain\\entities\\enums\\todotaskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|d:\\todo-app\\todoapp.contracts\\todotasks\\enums\\todotaskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EB352DA1-800F-42D6-853F-B60164F4FA94}|TodoApp.Contracts\\TodoApp.Contracts.csproj|solutionrelative:todoapp.contracts\\todotasks\\enums\\todotaskstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|d:\\todo-app\\todoapp.blazor\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{4BC94466-FF13-4757-842C-BFD620A24B7A}|TodoApp.Blazor\\TodoApp.Blazor.csproj|solutionrelative:todoapp.blazor\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -27,19 +47,81 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "NavMenu.razor",
-              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
-              "RelativeDocumentMoniker": "TodoApp.Blazor\\Layout\\NavMenu.razor",
-              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
-              "RelativeToolTip": "TodoApp.Blazor\\Layout\\NavMenu.razor",
-              "ViewState": "AgIAACQAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-09T16:49:39.181Z",
+              "Title": "TodoAppDbContext.cs",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Context\\TodoAppDbContext.cs",
+              "RelativeDocumentMoniker": "TodoApp.Infrastructure\\Persistence\\Context\\TodoAppDbContext.cs",
+              "ToolTip": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Context\\TodoAppDbContext.cs*",
+              "RelativeToolTip": "TodoApp.Infrastructure\\Persistence\\Context\\TodoAppDbContext.cs*",
+              "ViewState": "AgIAABQBAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T14:00:43.475Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AiParsedInput.cs",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Models\\AiParsedInput.cs",
+              "RelativeDocumentMoniker": "TodoApp.Infrastructure\\Persistence\\Models\\AiParsedInput.cs",
+              "ToolTip": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Models\\AiParsedInput.cs",
+              "RelativeToolTip": "TodoApp.Infrastructure\\Persistence\\Models\\AiParsedInput.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T13:47:05.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TodoTask.cs",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Models\\TodoTask.cs",
+              "RelativeDocumentMoniker": "TodoApp.Infrastructure\\Persistence\\Models\\TodoTask.cs",
+              "ToolTip": "D:\\todo-app\\TodoApp.Infrastructure\\Persistence\\Models\\TodoTask.cs",
+              "RelativeToolTip": "TodoApp.Infrastructure\\Persistence\\Models\\TodoTask.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAAwAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T11:24:59.366Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TodoTaskStatus.cs",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Domain\\Entities\\Enums\\TodoTaskStatus.cs",
+              "RelativeDocumentMoniker": "TodoApp.Domain\\Entities\\Enums\\TodoTaskStatus.cs",
+              "ToolTip": "D:\\todo-app\\TodoApp.Domain\\Entities\\Enums\\TodoTaskStatus.cs",
+              "RelativeToolTip": "TodoApp.Domain\\Entities\\Enums\\TodoTaskStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T11:24:43.266Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TodoTaskStatus.cs",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Contracts\\TodoTasks\\Enums\\TodoTaskStatus.cs",
+              "RelativeDocumentMoniker": "TodoApp.Contracts\\TodoTasks\\Enums\\TodoTaskStatus.cs",
+              "ToolTip": "D:\\todo-app\\TodoApp.Contracts\\TodoTasks\\Enums\\TodoTaskStatus.cs",
+              "RelativeToolTip": "TodoApp.Contracts\\TodoTasks\\Enums\\TodoTaskStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-15T11:18:43.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "ToolTip": "D:\\todo-app\\TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "TodoApp.Blazor\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-09T16:49:39.181Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Login.razor",
               "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Login.razor",
               "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\Login.razor",
@@ -51,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Home.razor",
               "DocumentMoniker": "D:\\todo-app\\TodoApp.Blazor\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "TodoApp.Blazor\\Pages\\Home.razor",

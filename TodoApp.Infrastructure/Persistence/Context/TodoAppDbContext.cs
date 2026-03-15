@@ -14,6 +14,8 @@ public partial class TodoAppDbContext : DbContext
 
     public virtual DbSet<ActivityLog> ActivityLogs { get; set; }
 
+    public virtual DbSet<AiParsedInput> AiParsedInputs { get; set; }
+
     public virtual DbSet<AppUser> AppUsers { get; set; }
 
     public virtual DbSet<Attachment> Attachments { get; set; }
@@ -62,6 +64,21 @@ public partial class TodoAppDbContext : DbContext
                 .HasForeignKey(d => d.ActorUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Activity_Actor");
+        });
+
+        modelBuilder.Entity<AiParsedInput>(entity =>
+        {
+            entity.HasKey(e => e.ParsedId).HasName("PK__AiParsed__D8BC6F511821D50C");
+
+            entity.ToTable("AiParsedInput");
+
+            entity.HasIndex(e => new { e.UserId, e.CreatedAt }, "IX_AiParsedInput_User").IsDescending(false, true);
+
+            entity.Property(e => e.ParsedId).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.CreatedAt)
+                .HasPrecision(3)
+                .HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.RawText).HasMaxLength(1000);
         });
 
         modelBuilder.Entity<AppUser>(entity =>
@@ -322,13 +339,19 @@ public partial class TodoAppDbContext : DbContext
 
             entity.ToTable("TodoTask");
 
+            entity.HasIndex(e => new { e.IsAiGenerated, e.CreatedAt }, "IX_TodoTask_AI").IsDescending(false, true);
+
             entity.HasIndex(e => e.DueAt, "IX_TodoTask_DueAt_Open").HasFilter("(([Status] IN ('todo', 'doing', 'blocked')) AND [IsDeleted]=(0))");
 
             entity.HasIndex(e => new { e.ListId, e.IsDeleted }, "IX_TodoTask_List_NotDeleted").HasFilter("([IsDeleted]=(0))");
 
+            entity.HasIndex(e => e.Status, "IX_TodoTask_Status").HasFilter("([IsDeleted]=(0))");
+
             entity.HasIndex(e => e.Status, "IX_TodoTask_Status_Active").HasFilter("([IsDeleted]=(0))");
 
             entity.Property(e => e.TaskId).HasDefaultValueSql("(newsequentialid())");
+            entity.Property(e => e.AiRawInput).HasMaxLength(1000);
+            entity.Property(e => e.AiSource).HasMaxLength(50);
             entity.Property(e => e.CompletedAt).HasPrecision(0);
             entity.Property(e => e.CreatedAt)
                 .HasPrecision(3)
@@ -347,7 +370,7 @@ public partial class TodoAppDbContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(16)
                 .IsUnicode(false)
-                .HasDefaultValue("todo");
+                .HasDefaultValue("Todo");
             entity.Property(e => e.Title).HasMaxLength(300);
             entity.Property(e => e.UpdatedAt)
                 .HasPrecision(3)
